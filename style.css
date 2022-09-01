@@ -3,11 +3,19 @@
   src: url(fonts/space_grotesk_variable.ttf);
 }
 
+@font-face {
+  font-family: "roboto";
+  src: url(fonts/roboto_slab/RobotoSlab-VariableFont_wght.ttf);
+}
+
 :root {
   --unit: 8px;
-  --color-light0: hsl(0, 0%, 85%);
-  --color-light1: hsl(0, 0%, 73%);
-  --color-dark: hsl(0, 0%, 16%);
+  --color-light0: hsl(234, 12%, 84%);
+  --color-light1: hsl(235, 10%, 75%);
+  --color-inactive: hsl(228, 2%, 46%);
+  --color-active: hsl(220, 33%, 98%);
+  --color-dark0: hsl(0, 0%, 11%);
+  --color-dark1: hsl(240, 3%, 14%);
 }
 
 * {
@@ -18,9 +26,10 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  font-family: "space";
+  font-family: "roboto";
   font-weight: 400;
-  color: var(--color-dark);
+  background-color: var(--color-dark0);
+  color: var(--color-active);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -32,6 +41,40 @@ h1 {
   font-size: 60px;
 }
 
+input[type="text"] {
+  width: 100%;
+  height: 100%;
+  background-color: inherit;
+  color: inherit;
+  caret-color: white;
+  border-style: none;
+  font-family: inherit;
+  padding: var(--unit);
+}
+
+.inactive-text {
+  color: var(--color-inactive);
+}
+.active-text {
+  color: var(--color-active);
+}
+.icon {
+  background-attachment: local;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.icon-2x {
+  width: calc(var(--unit) * 2);
+  height: calc(var(--unit) * 2);
+}
+
+.edit-icon {
+  background-image: url(/images/ui/icons/edit.png);
+}
+.delete-icon {
+  background-image: url(/images/ui/icons/trashcan.png);
+}
 button {
   cursor: pointer;
 }
@@ -48,7 +91,7 @@ button {
   flex-direction: column;
   width: 100vw;
   height: 100vh;
-  background-color: var(--color-light0);
+  background-color: var(--color-dark0);
 }
 
 .start-title {
@@ -69,14 +112,13 @@ button {
 }
 .chapter-container:hover .chapter {
   transform: translateY(calc(var(--unit) * -0.5));
-  filter: brightness(0.95);
+  background-color: var(--color-light1);
 }
 
 .chapter {
   position: relative;
   border-radius: var(--unit);
-  overflow: hidden;
-  background-color: white;
+  background-color: var(--color-light0);
   width: calc(var(--unit) * 20);
   height: calc(var(--unit) * 18);
   transition: all 0.15s ease-in-out;
@@ -90,9 +132,10 @@ button {
   justify-content: center;
   align-items: center;
   padding: calc(var(--unit) * 1);  
-  font-weight: 600;
-  background-color: var(--color-dark);
+  font-weight: 500;
+  background-color: var(--color-dark0);
   color: var(--color-light0);
+  letter-spacing: 0.04rem;
 }
 
 .chapter-cover-image {
@@ -135,4 +178,82 @@ button.mode {
 
 button.mode:hover {
   background-color: var(--color-light1);
+}
+
+.edit-panel, .item-list-panel {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--unit) * 2);
+  padding: calc(var(--unit) * 4);
+}
+.edit-panel {
+  flex-grow: 1;
+  height: 100%;
+  background-color: var(--color-dark1);
+}
+.item-list-panel {
+  width: calc(var(--unit) * 40);
+  height: 100%;
+  background-color: var(--color-dark1);
+}
+
+#edit-window .main-content {
+  padding: calc(var(--unit) * 8);
+  height: 100%;
+  width: 100%;
+  max-width: 1600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--unit) * 2);
+}
+
+.input-field {
+  background-color: var(--color-dark0);
+}
+
+.input-field.author-name {
+  height: calc(var(--unit) * 4);
+  width: 100%;
+}
+
+.works {
+  display: flex;
+  gap: calc(var(--unit) * 2);
+  padding: calc(var(--unit) * 1);
+  background-color: var(--color-dark0);
+  width: calc(var(--unit) * 18);
+  height: calc(var(--unit) * 15);
+}
+
+.dataset-list {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--unit) * 2);
+}
+
+.dataset-item {
+  position: relative;
+  background-color: var(--color-dark1);
+  padding: calc(var(--unit) * 2);
+  border-radius: var(--unit);
+  display: flex;
+  flex-direction: column;
+  gap: var(--unit);
+  max-width: 300px;
+}
+
+.dataset-title {
+  font-size: 1rem;
+}
+.dataset-description {
+  font-size: 0.8rem;
+}
+
+.dataset-item .buttons {
+  position: absolute;
+  display: flex;
+  gap: var(--unit);
+  top: var(--unit);
+  right: var(--unit);
 }

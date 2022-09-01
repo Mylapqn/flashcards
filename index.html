@@ -11,10 +11,10 @@
   <div class="program-window hidden" id="start-window">
     <div class="start-title">
       <div class="subheading">
-        <h3>Mylapqn and BigT's</h3>
+        <h2>Mylapqn and BigT's</h2>
       </div>
       <div class="main-heading">
-        <h1>DEKU trainer</h1>
+        <h1>DEKU Trainer</h1>
       </div>
     </div>
     <div class="mode-select-container">
@@ -26,46 +26,56 @@
   </div>
   <div class="program-window hidden" id="chapter-select-window">
     <div class="main-heading">
-      <h1>Select a chapter:</h1>
+      <h2>Select a chapter:</h2>
     </div>
+    <div style="height: calc(var(--unit) * 2);"></div>
     <div class="chapter-wrapper">
-      <div class="chapter-container">
-        <div class="chapter" data-chapter="1">
-          <div class="chapter-cover-image">
-            <img src="images/silvie1.jpg" alt="" srcset="">
-          </div>
-          <div class="chapter-title">DEKU1</div>
-        </div>
-      </div>
-      <div class="chapter-container">
-        <div class="chapter" data-chapter="2">
-          <div class="chapter-cover-image">
-            <img src="images/silvie2.jpg" alt="" srcset="">
-          </div>
-          <div class="chapter-title">DEKU2</div>
-        </div>
-      </div>
-      <div class="chapter-container">
-        <div class="chapter" data-chapter="3">
-          <div class="chapter-cover-image">
-            <img src="images/silvie3.jpg" alt="" srcset="">
-          </div>
-          <div class="chapter-title">DEKU3</div>
-        </div>
-      </div>
-      <div class="chapter-container">
-        <div class="chapter" data-chapter="4">
-          <div class="chapter-cover-image">
-            <img src="images/silvie4.jpg" alt="" srcset="">
-          </div>
-          <div class="chapter-title">DEKU4</div>
-        </div>
-      </div>
     </div>
   </div>
   <div class="program-window hidden" id="practice-window"></div>
-  <div class="program-window hidden" id="edit-window"></div>
-
+  <div class="program-window hidden" id="edit-window">
+    <div class="main-content">
+      <div class="edit-panel">
+        <div class="dataset-info">
+          <span class="inactive-text">Editing dataset:</span>
+          <span class="active-text" id="editor-current-dataset-text-label">DEKU1</span>
+        </div>
+        <div class="main-heading">
+          <h1>Add new item</h1>
+        </div>
+        <div class="input-field author-name">
+          <input type="text" name="" id="" placeholder="Author's name">
+        </div>
+        <div class="input-field country">
+          <input type="text" name="" id="" placeholder="Author's name">
+        </div>
+        <div class="input-field time-period">
+          <input type="text" name="" id="" placeholder="Author's name">
+        </div>
+        <div class="input-field style">
+          <input type="text" name="" id="" placeholder="Author's name">
+        </div>
+        <div class="works">
+          <div class="work">
+            <div class="work-title">Big T's Giant Penis</div>
+          </div>
+        </div>
+      </div>
+      <div class="item-list-panel"></div>
+    </div>
+  </div>
+  <div class="program-window hidden" id="dataset-edit-window">
+    <div class="dataset-list">
+      <div class="dataset-item" onclick="program.windows.set(editWindow)">
+        <div class="buttons">
+          <div class="icon icon-2x edit-icon"></div>
+          <div class="icon icon-2x delete-icon"></div>
+        </div>
+        <div class="dataset-title">DEKU1</div>
+        <div class="dataset-description">This is the vanilla experience. Recommended for new players...</div>
+      </div>
+    </div>
+  </div>
   <!-- utility -->
   <script src="js/utility/json.js"></script>
   <script src="js/utility/state.js"></script>
@@ -81,9 +91,13 @@
   <script src="js/start_window.js"></script>
   <script src="js/practice_window.js"></script>
   <script src="js/chapter_select_window.js"></script>
+  <script src="js/dataset_edit_window.js"></script>
   <script src="js/edit_window.js"></script>
   <script src="js/program.js"></script>
 
+  <script src="js/work.js"></script>
+  <script src="js/item.js"></script>
+  <script src="js/data.js"></script>
   <!-- app -->
   <script src="js/app.js"></script>
 </body>

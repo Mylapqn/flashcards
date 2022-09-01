@@ -9,7 +9,7 @@ class StartWindow extends ProgramWindow {
       btnEdit: target.closest("button.mode.edit"),
     }
     if(elements.btnEdit)
-      program.windows.set(editWindow)
+      program.windows.set(datasetEditWindow)
     if(elements.btnPractice)
       program.windows.set(chapterSelectWindow)
   }

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deku Trainer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="program-window hidden" id="start-window">
+    <div class="start-title">
+      <div class="subheading">
+        <h3>Mylapqn and BigT's</h3>
+      </div>
+      <div class="main-heading">
+        <h1>DEKU trainer</h1>
+      </div>
+    </div>
+    <div class="mode-select-container">
+      <div class="mode-select">
+        <button class="mode practice">PRACTICE</button>
+        <button class="mode edit">EDIT DATA</button>
+      </div>
+    </div>
+  </div>
+  <div class="program-window hidden" id="chapter-select-window">
+    <div class="main-heading">
+      <h1>Select a chapter:</h1>
+    </div>
+    <div class="chapter-wrapper">
+      <div class="chapter-container">
+        <div class="chapter" data-chapter="1">
+          <div class="chapter-cover-image">
+            <img src="images/silvie1.jpg" alt="" srcset="">
+          </div>
+          <div class="chapter-title">DEKU1</div>
+        </div>
+      </div>
+      <div class="chapter-container">
+        <div class="chapter" data-chapter="2">
+          <div class="chapter-cover-image">
+            <img src="images/silvie2.jpg" alt="" srcset="">
+          </div>
+          <div class="chapter-title">DEKU2</div>
+        </div>
+      </div>
+      <div class="chapter-container">
+        <div class="chapter" data-chapter="3">
+          <div class="chapter-cover-image">
+            <img src="images/silvie3.jpg" alt="" srcset="">
+          </div>
+          <div class="chapter-title">DEKU3</div>
+        </div>
+      </div>
+      <div class="chapter-container">
+        <div class="chapter" data-chapter="4">
+          <div class="chapter-cover-image">
+            <img src="images/silvie4.jpg" alt="" srcset="">
+          </div>
+          <div class="chapter-title">DEKU4</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="program-window hidden" id="practice-window"></div>
+  <div class="program-window hidden" id="edit-window"></div>
+
+  <!-- utility -->
+  <script src="js/utility/json.js"></script>
+  <script src="js/utility/state.js"></script>
+  <script src="js/utility/switch.js"></script>
+  <script src="js/utility/extensions.js"></script>
+  <script src="js/utility/math_utils.js"></script>
+  <script src="js/utility/random.js"></script>
+  <script src="js/utility/ease.js"></script>
+  <script src="js/utility/html_methods.js"></script>
+
+  <!-- components -->
+  <script src="js/program_window.js"></script>
+  <script src="js/start_window.js"></script>
+  <script src="js/practice_window.js"></script>
+  <script src="js/chapter_select_window.js"></script>
+  <script src="js/edit_window.js"></script>
+  <script src="js/program.js"></script>
+
+  <!-- app -->
+  <script src="js/app.js"></script>
+</body>
+</html>

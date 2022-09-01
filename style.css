@@ -1,0 +1,138 @@
+@font-face {
+  font-family: "space";
+  src: url(fonts/space_grotesk_variable.ttf);
+}
+
+:root {
+  --unit: 8px;
+  --color-light0: hsl(0, 0%, 85%);
+  --color-light1: hsl(0, 0%, 73%);
+  --color-dark: hsl(0, 0%, 16%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: "space";
+  font-weight: 400;
+  color: var(--color-dark);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  padding: 0;
+  margin: 0;
+}
+
+h1 {
+  font-size: 60px;
+}
+
+button {
+  cursor: pointer;
+}
+
+.hidden {
+  display: none!important;
+}
+
+.program-window {
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--color-light0);
+}
+
+.start-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: calc(var(--unit) * 5);
+}
+
+.chapter-wrapper {
+  display: flex;
+  gap: calc(var(--unit) * 2);
+}
+
+.chapter-container {
+  cursor: pointer;  
+}
+.chapter-container:hover .chapter {
+  transform: translateY(calc(var(--unit) * -0.5));
+  filter: brightness(0.95);
+}
+
+.chapter {
+  position: relative;
+  border-radius: var(--unit);
+  overflow: hidden;
+  background-color: white;
+  width: calc(var(--unit) * 20);
+  height: calc(var(--unit) * 18);
+  transition: all 0.15s ease-in-out;
+}
+
+.chapter-title {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: calc(var(--unit) * 1);  
+  font-weight: 600;
+  background-color: var(--color-dark);
+  color: var(--color-light0);
+}
+
+.chapter-cover-image {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.chapter-cover-image img {
+  width: 100%;
+}
+
+.mode-select-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mode-select {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--unit) * 2);
+}
+
+button.mode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: var(--color-light0);
+  padding: calc(var(--unit) * 2) calc(var(--unit) * 3);
+  border-radius: var(--unit);
+}
+
+button.mode:hover {
+  background-color: var(--color-light1);
+}

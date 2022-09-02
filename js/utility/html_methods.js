@@ -12,7 +12,6 @@ class Query {
     return Array.from(document.querySelectorAll(query))
   }
 }
-
 class HTML {
   static Element(tagname, classes, innerText = "", attributes = [["title", ""]]) {
     let element = document.createElement(tagname)
@@ -21,7 +20,8 @@ class HTML {
       element.classList.add(cls)
     })
     attributes.forEach(attr => {
-      element.setAttribute(attr[0], attr[1])
+      if(attr[0] && attr[1])
+        element.setAttribute(attr[0], attr[1])
     })
     element.innerText = innerText
     return element

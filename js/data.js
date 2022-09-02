@@ -1,10 +1,5 @@
 let data = {
   "DEKU1": [
-    {
-      author: "Štěpán Trvaj"
-    },
+    //instances of Item
   ],
-  "DEKU2": [],
-  "DEKU3": [],
-  "DEKU4": [],
 }

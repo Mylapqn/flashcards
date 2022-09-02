@@ -1,9 +1,9 @@
 class Author {
-  constructor(name, style, works) {
+  constructor(name, country, timePeriod, style, works) {
     this.name = name
     this.country = country
-    this.style = style
     this.timePeriod = timePeriod
+    this.style = style
     this.notes = notes
     this.works = works
   }

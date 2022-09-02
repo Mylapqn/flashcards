@@ -8,6 +8,10 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div id="mouse-tooltip" class="hidden">
+    <div class="tooltip-title">Title</div>
+    <div class="tooltip-description">Thingy</div>
+  </div>
   <div class="program-window hidden" id="start-window">
     <div class="start-title">
       <div class="subheading">
@@ -33,7 +37,36 @@
     </div>
   </div>
   <div class="program-window hidden" id="practice-window"></div>
+  <div class="program-window hidden" id="dataset-edit-window">
+    <div class="main-heading">
+      <h2>Datasets</h2>
+    </div>
+    <div style="height: calc(var(--unit) * 2);"></div>
+    <div class="dataset-list">
+      <div class="dataset-item" data-datasetname="DEKU1">
+        <div class="buttons">
+          <div class="icon icon-3x edit-icon"></div>
+          <div class="icon icon-3x delete-icon"></div>
+        </div>
+        <div class="dataset-header">
+          <span class="dataset-title">DEKU1</span>
+          <span class="dataset-item-count">69 items</span>
+        </div>
+        <div class="dataset-description">This is the vanilla experience. Recommended for new players...</div>
+      </div>
+      <div class="add-dataset-button">
+          <div class="icon-4x plus-sign">
+            <div class="bar-vertical"></div>
+            <div class="bar-horizontal"></div>
+          </div>
+          <div>ADD DATASET</div>
+      </div>
+    </div>
+  </div>
   <div class="program-window hidden" id="edit-window">
+    <div class="back-button">
+      <div class="icon icon-4x back-icon"></div>
+    </div>
     <div class="main-content">
       <div class="edit-panel">
         <div class="dataset-info">
@@ -83,18 +116,7 @@
       </div>
     </div>
   </div>
-  <div class="program-window hidden" id="dataset-edit-window">
-    <div class="dataset-list">
-      <div class="dataset-item" onclick="program.windows.set(editWindow)">
-        <div class="buttons">
-          <div class="icon icon-2x edit-icon"></div>
-          <div class="icon icon-2x delete-icon"></div>
-        </div>
-        <div class="dataset-title">DEKU1</div>
-        <div class="dataset-description">This is the vanilla experience. Recommended for new players...</div>
-      </div>
-    </div>
-  </div>
+
   <!-- utility -->
   <script src="js/utility/json.js"></script>
   <script src="js/utility/state.js"></script>
@@ -106,17 +128,18 @@
   <script src="js/utility/html_methods.js"></script>
 
   <!-- components -->
+  <script src="js/work.js"></script>
+  <script src="js/author.js"></script>
+  <script src="js/data.js"></script>
   <script src="js/program_window.js"></script>
   <script src="js/start_window.js"></script>
   <script src="js/practice_window.js"></script>
   <script src="js/chapter_select_window.js"></script>
   <script src="js/dataset_edit_window.js"></script>
   <script src="js/edit_window.js"></script>
+  <script src="js/program_ui.js"></script>
   <script src="js/program.js"></script>
 
-  <script src="js/work.js"></script>
-  <script src="js/item.js"></script>
-  <script src="js/data.js"></script>
   <!-- app -->
   <script src="js/app.js"></script>
 </body>

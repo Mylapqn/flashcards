@@ -27,12 +27,14 @@ body {
   overflow-x: hidden;
   font-family: "roboto";
   font-weight: 400;
+  letter-spacing: 0.01rem;
   background-color: var(--color-dark0);
   color: var(--color-active);
 }
 h1, h2, h3, h4, h5, h6 {
   padding: 0;
   margin: 0;
+  letter-spacing: 0.04rem;
 }
 h1 {
   font-size: 60px;
@@ -64,10 +66,18 @@ input:focus {
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
+  border-radius: calc(var(--unit) * 0.5);
+}
+.icon:hover {
+  background-color: rgba(255, 255, 255, 0.08);
 }
 .icon-2x {
   width: calc(var(--unit) * 2);
   height: calc(var(--unit) * 2);
+}
+.icon-3x {
+  width: calc(var(--unit) * 3);
+  height: calc(var(--unit) * 3);
 }
 .icon-4x {
   width: calc(var(--unit) * 4);
@@ -79,11 +89,34 @@ input:focus {
 .delete-icon {
   background-image: url(/images/ui/icons/trashcan.png);
 }
+.back-icon {
+  background-image: url(/images/ui/icons/back.png);
+}
 button {
+  color: inherit;
+  font-family: inherit;
   cursor: pointer;
+  border: none;
 }
 .hidden {
   display: none!important;
+}
+#mouse-tooltip {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: var(--unit);
+  background-color: var(--color-dark1);
+  padding: calc(var(--unit) * 1);
+  z-index: 100;
+}
+.tooltip-title {
+  color: var(--color-light0);
+  font-size: 1rem;
+}
+.tooltip-description {
+  color: var(--color-inactive);
+  font-size: 0.8rem;
 }
 .program-window {
   display: flex;
@@ -101,6 +134,7 @@ button {
   align-items: center;
   flex-direction: column;
   margin: calc(var(--unit) * 5);
+  user-select: none;
 }
 .chapter-wrapper {
   display: flex;
@@ -155,20 +189,25 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: calc(var(--unit) * 2);
+  flex-direction: column;
+  gap: calc(var(--unit) * 1);
 }
 button.mode {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: "roboto";
   font-size: 1rem;
   font-weight: 600;
-  background-color: var(--color-light0);
+  background-color: var(--color-dark1);
   padding: calc(var(--unit) * 2) calc(var(--unit) * 3);
   border-radius: var(--unit);
 }
 button.mode:hover {
-  background-color: var(--color-light1);
+  background-color: var(--color-dark2);
+}
+button.mode.practice {
+  font-size: 1.5rem;
 }
 .edit-panel, .item-list-panel {
   display: flex;
@@ -187,7 +226,7 @@ button.mode:hover {
   background-color: var(--color-dark1);
 }
 #edit-window .main-content {
-  padding: calc(var(--unit) * 8);
+  padding: calc(var(--unit) * 8) calc(var(--unit) * 12);
   height: 100%;
   width: 100%;
   max-width: 1600px;
@@ -196,6 +235,14 @@ button.mode:hover {
   align-items: center;
   gap: calc(var(--unit) * 2);
 }
+
+.back-button {
+  position: absolute;
+  left: calc(var(--unit) * 4);
+  top: calc(var(--unit) * 8);
+  z-index: 1;
+}
+
 .inputs {
   display: flex;
   flex-direction: column;
@@ -277,17 +324,43 @@ button.mode:hover {
   gap: calc(var(--unit) * 2);
 }
 .dataset-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--unit);
+}
+.add-dataset-button {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--unit) * 2);
+  color: var(--color-inactive);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.dataset-item, .add-dataset-button {
   position: relative;
   background-color: var(--color-dark1);
   padding: calc(var(--unit) * 2);
   border-radius: var(--unit);
-  display: flex;
-  flex-direction: column;
-  gap: var(--unit);
   max-width: 300px;
+  width: 300px;
+  cursor: pointer;
+}
+.add-dataset-button {
+  order: 2;
 }
 .dataset-title {
   font-size: 1rem;
+}
+.dataset-header {
+  display: flex;
+  align-items: center;
+  gap: var(--unit);
+}
+.dataset-item-count {
+  position: relative;
+  top: calc(var(--unit) / 8);
+  color: var(--color-inactive);
+  font-size: 0.8rem;
 }
 .dataset-description {
   font-size: 0.8rem;
@@ -296,8 +369,11 @@ button.mode:hover {
   position: absolute;
   display: flex;
   gap: var(--unit);
-  top: var(--unit);
-  right: var(--unit);
+  top: calc(var(--unit) * 2);
+  right: calc(var(--unit) * 2);
+}
+.dataset-item:hover, .add-dataset-button:hover {
+  background-color: var(--color-dark2);
 }
 .item-list-header {
 

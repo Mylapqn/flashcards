@@ -19,23 +19,33 @@ class Program {
         this.active.show()
       },
       setPrevious() {
+        if(this.history.length === 0) return console.log("nowhere to go; reached the end of history")
         let previous = this.history.shift()
         this.future.unshift(this.active)
         this.set(previous)
       },
       setNext() {
+        if(this.future.length === 0) return console.log("nowhere to go ; reached the end of future")
         let next = this.future.shift()
         this.history.unshift(this.active)
         this.set(next)
       },
     }
+    this.UI = new ProgramUI()
   }
   handleInput(e) {
+    if(this["handle" + e.type.capitalize()])
+      this["handle" + e.type.capitalize()](e)
     if(this.windows.active) 
       this.windows.active.handleInput(e)
+    this.UI.handleInput(e)
   }
-  startPractice(chapterNumber) {
+  handleMousedown(e) {
+    if(e.button === 4) this.windows.setNext()
+    if(e.button === 3) this.windows.setPrevious()
+  }
+  startPractice(datasetName) {
     this.windows.set(practiceWindow)
-    practiceWindow.loadData(chapterNumber)
+    practiceWindow.loadData(datasetName)
   }
 }

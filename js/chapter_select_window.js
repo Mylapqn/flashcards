@@ -1,9 +1,9 @@
 class ChapterSelectWindow extends ProgramWindow {
   constructor(element) {
     super("ChapterSelectWindow", element)
-    this.createChapterButton()
+    this.createDatasetButton()
   }
-  createChapterButton() {
+  createDatasetButton() {
     for(let dataset in data) {
       let container = HTML.Element("div", "chapter-container")
       let chapter = HTML.Element("div", "chapter")
@@ -11,15 +11,16 @@ class ChapterSelectWindow extends ProgramWindow {
       let imageContainer = HTML.Element("div", "chapter-cover-image")
       container.append(chapter)
       chapter.append(imageContainer, title)
+      container.dataset.datasetname = dataset
       Query.on(this.element, ".chapter-wrapper").append(container)
     }
   }
   handleMousedown(e) {
     let [target] = [e.target]
     let elements = {
-      chapter: target.closest(".chapter")
+      datasetCard: target.closest(".chapter-container")
     }
-    if(elements.chapter) 
-      program.startPractice(elements.chapter.dataset.chapter)
+    if(elements.datasetCard) 
+      program.startPractice(elements.datasetCard.dataset.datasetname)
   }
 }

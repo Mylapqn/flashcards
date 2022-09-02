@@ -1,6 +1,7 @@
 class Work {
-  constructor(author, title, imageUrl) {
+  constructor(title, description, author, imageUrl) {
     this.title = title
+    this.description = description
     this.author = author
     this.imageUrl = imageUrl
   }

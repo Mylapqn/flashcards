@@ -2,26 +2,25 @@
   font-family: "space";
   src: url(fonts/space_grotesk_variable.ttf);
 }
-
 @font-face {
   font-family: "roboto";
   src: url(fonts/roboto_slab/RobotoSlab-VariableFont_wght.ttf);
 }
-
 :root {
   --unit: 8px;
   --color-light0: hsl(234, 12%, 84%);
   --color-light1: hsl(235, 10%, 75%);
   --color-inactive: hsl(228, 2%, 46%);
   --color-active: hsl(220, 33%, 98%);
+  --color-accent: hsl(240, 51%, 39%);
   --color-dark0: hsl(0, 0%, 11%);
   --color-dark1: hsl(240, 3%, 14%);
+  --color-dark2: hsl(240, 3%, 17%);
+  --color-dark3: hsl(240, 3%, 20%);
 }
-
 * {
   box-sizing: border-box;
 }
-
 body {
   margin: 0;
   padding: 0;
@@ -31,16 +30,13 @@ body {
   background-color: var(--color-dark0);
   color: var(--color-active);
 }
-
 h1, h2, h3, h4, h5, h6 {
   padding: 0;
   margin: 0;
 }
-
 h1 {
   font-size: 60px;
 }
-
 input[type="text"] {
   width: 100%;
   height: 100%;
@@ -50,8 +46,13 @@ input[type="text"] {
   border-style: none;
   font-family: inherit;
   padding: var(--unit);
+  background-color: var(--color-dark0);
+  outline: none;  
+  border-radius: var(--unit);
 }
-
+input:focus {
+  outline: 2px solid var(--color-accent);
+}
 .inactive-text {
   color: var(--color-inactive);
 }
@@ -68,7 +69,10 @@ input[type="text"] {
   width: calc(var(--unit) * 2);
   height: calc(var(--unit) * 2);
 }
-
+.icon-4x {
+  width: calc(var(--unit) * 4);
+  height: calc(var(--unit) * 4);
+}
 .edit-icon {
   background-image: url(/images/ui/icons/edit.png);
 }
@@ -78,11 +82,9 @@ input[type="text"] {
 button {
   cursor: pointer;
 }
-
 .hidden {
   display: none!important;
 }
-
 .program-window {
   display: flex;
   position: absolute;
@@ -93,7 +95,6 @@ button {
   height: 100vh;
   background-color: var(--color-dark0);
 }
-
 .start-title {
   display: flex;
   justify-content: center;
@@ -101,12 +102,10 @@ button {
   flex-direction: column;
   margin: calc(var(--unit) * 5);
 }
-
 .chapter-wrapper {
   display: flex;
   gap: calc(var(--unit) * 2);
 }
-
 .chapter-container {
   cursor: pointer;  
 }
@@ -114,7 +113,6 @@ button {
   transform: translateY(calc(var(--unit) * -0.5));
   background-color: var(--color-light1);
 }
-
 .chapter {
   position: relative;
   border-radius: var(--unit);
@@ -123,7 +121,6 @@ button {
   height: calc(var(--unit) * 18);
   transition: all 0.15s ease-in-out;
 }
-
 .chapter-title {
   position: absolute;
   bottom: 0;
@@ -137,7 +134,6 @@ button {
   color: var(--color-light0);
   letter-spacing: 0.04rem;
 }
-
 .chapter-cover-image {
   width: 100%;
   max-width: 100%;
@@ -147,24 +143,20 @@ button {
   align-items: center;
   overflow: hidden;
 }
-
 .chapter-cover-image img {
   width: 100%;
 }
-
 .mode-select-container {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
 .mode-select {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: calc(var(--unit) * 2);
 }
-
 button.mode {
   display: flex;
   justify-content: center;
@@ -175,11 +167,9 @@ button.mode {
   padding: calc(var(--unit) * 2) calc(var(--unit) * 3);
   border-radius: var(--unit);
 }
-
 button.mode:hover {
   background-color: var(--color-light1);
 }
-
 .edit-panel, .item-list-panel {
   display: flex;
   flex-direction: column;
@@ -196,7 +186,6 @@ button.mode:hover {
   height: 100%;
   background-color: var(--color-dark1);
 }
-
 #edit-window .main-content {
   padding: calc(var(--unit) * 8);
   height: 100%;
@@ -207,31 +196,86 @@ button.mode:hover {
   align-items: center;
   gap: calc(var(--unit) * 2);
 }
-
-.input-field {
-  background-color: var(--color-dark0);
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--unit) * 1);
 }
 
+.input-field {
+  /* background-color: var(--color-dark0); */
+}
 .input-field.author-name {
   height: calc(var(--unit) * 4);
   width: 100%;
 }
-
 .works {
   display: flex;
-  gap: calc(var(--unit) * 2);
+  flex-wrap: wrap;
+  gap: calc(var(--unit) * 1);
+}
+.work, .add-work-button {
+  display: flex;
+  flex-direction: column;
+  gap: var(--unit);
   padding: calc(var(--unit) * 1);
   background-color: var(--color-dark0);
   width: calc(var(--unit) * 18);
-  height: calc(var(--unit) * 15);
+  height: calc(var(--unit) * 18);
+  border-radius: var(--unit);
 }
-
+.add-work-button {
+  background-color: var(--color-dark2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  order: 2;
+}
+.add-work-button:hover {
+  background-color: var(--color-dark3);
+}
+.add-image-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: var(--unit);
+  height: 100%;
+  padding: var(--unit);
+  background-color: var(--color-dark1);
+  border-radius: var(--unit);
+  cursor: pointer;
+}
+.add-image-button:hover {
+  background-color: var(--color-dark2);
+}
+.plus-sign {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.bar-vertical,.bar-horizontal {
+  position: absolute;
+  background-color: var(--color-inactive);
+}
+.bar-vertical {
+  width: 4px;
+  height: 100%;
+}
+.bar-horizontal {
+  width: 100%;
+  height: 4px;
+}
+.add-image-button-description {
+  font-size: 0.8rem;
+  color: var(--color-inactive);
+}
 .dataset-list {
   display: flex;
   flex-direction: column;
   gap: calc(var(--unit) * 2);
 }
-
 .dataset-item {
   position: relative;
   background-color: var(--color-dark1);
@@ -242,18 +286,19 @@ button.mode:hover {
   gap: var(--unit);
   max-width: 300px;
 }
-
 .dataset-title {
   font-size: 1rem;
 }
 .dataset-description {
   font-size: 0.8rem;
 }
-
 .dataset-item .buttons {
   position: absolute;
   display: flex;
   gap: var(--unit);
   top: var(--unit);
   right: var(--unit);
+}
+.item-list-header {
+
 }

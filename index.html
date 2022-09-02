@@ -43,7 +43,7 @@
     </div>
     <div style="height: calc(var(--unit) * 2);"></div>
     <div class="dataset-list">
-      <div class="dataset-item" data-datasetname="DEKU1">
+      <div class="dataset-item" data-datasetname="DEKU1" tabindex="0">
         <div class="buttons">
           <div class="icon icon-3x edit-icon"></div>
           <div class="icon icon-3x delete-icon"></div>
@@ -52,7 +52,7 @@
           <span class="dataset-title">DEKU1</span>
           <span class="dataset-item-count">69 items</span>
         </div>
-        <div class="dataset-description">This is the vanilla experience. Recommended for new players...</div>
+        <div class="dataset-description">This is the vanilla experience. Recommended for new players.</div>
       </div>
       <div class="add-dataset-button">
           <div class="icon-4x plus-sign">
@@ -64,13 +64,13 @@
     </div>
   </div>
   <div class="program-window hidden" id="edit-window">
-    <div class="back-button">
+    <div class="back-button" onclick="program.windows.setPrevious()">
       <div class="icon icon-4x back-icon"></div>
     </div>
     <div class="main-content">
       <div class="edit-panel">
         <div class="dataset-info">
-          <span class="inactive-text">Editing dataset:</span>
+          <span class="secondary-text">Editing dataset:</span>
           <span class="active-text" id="editor-current-dataset-text-label">DEKU1</span>
         </div>
         <div class="main-heading">
@@ -90,21 +90,24 @@
             <input type="text" name="" id="" placeholder="Style / Movement">
           </div>
           <div class="works">
-            <div class="add-work-button">
+            <div class="add-work-button" tabindex="1">
               <div class="icon-4x plus-sign">
                 <div class="bar-vertical"></div>
                 <div class="bar-horizontal"></div>
               </div>
+              <div class="add-work-text">ADD WORK</div>
             </div>
             <div class="work">
               <div class="work-title">
                 <input type="text" name="" id="" placeholder="Name">
+                <div class="icon icon-3x delete-icon"></div>
               </div>
               <div class="add-image-button">
                 <div class="icon-4x plus-sign">
                   <div class="bar-vertical"></div>
                   <div class="bar-horizontal"></div>
                 </div>
+                <div class="add-image-text">ADD IMAGE</div>
               </div>
             </div>
 

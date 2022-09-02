@@ -13,23 +13,43 @@ class Program {
       },
       set(win) {
         if(!this.all.findChild(win)) return
-        this.history.unshift(this.active)
+        if(this.active instanceof ProgramWindow) 
+          this.history.unshift(this.active)
+        this.future = []
         this.active = win
-        this.all.forEach(w => w.hide())
+        this.showActive()
+      },
+      showActive() {
         this.active.show()
+        this.all.forEach(w => {
+          if(w !== this.active) 
+            w.hide()
+        })
       },
       setPrevious() {
-        if(this.history.length === 0) return console.log("nowhere to go; reached the end of history")
+        if(this.history.length === 0) 
+          return console.log("nowhere to go, reached the end of history")
         let previous = this.history.shift()
         this.future.unshift(this.active)
-        this.set(previous)
+        this.active = previous
+        this.showActive()
+        this.log()
       },
       setNext() {
-        if(this.future.length === 0) return console.log("nowhere to go ; reached the end of future")
+        if(this.future.length === 0) 
+          return console.log("nowhere to go, reached the end of future")
         let next = this.future.shift()
         this.history.unshift(this.active)
-        this.set(next)
+        this.active = next
+        this.showActive()
+        this.log()
       },
+      log() {
+        console.log(
+          "history: ",this.history, 
+          "active: ",this.active, 
+          "future: ",this.future);
+      }
     }
     this.UI = new ProgramUI()
   }
@@ -37,8 +57,15 @@ class Program {
     if(this["handle" + e.type.capitalize()])
       this["handle" + e.type.capitalize()](e)
     if(this.windows.active) 
-      this.windows.active.handleInput(e)
+      if(this.passEvent(e))
+        this.windows.active.handleInput(e)
     this.UI.handleInput(e)
+  }
+  passEvent(e) {
+    if(e.button === 3 || e.button === 4)
+      return false
+    else
+      return true
   }
   handleMousedown(e) {
     if(e.button === 4) this.windows.setNext()

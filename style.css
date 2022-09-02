@@ -10,9 +10,10 @@
   --unit: 8px;
   --color-light0: hsl(234, 12%, 84%);
   --color-light1: hsl(235, 10%, 75%);
-  --color-inactive: hsl(228, 2%, 46%);
+  --color-secondary: hsl(228, 2%, 46%);
   --color-active: hsl(220, 33%, 98%);
-  --color-accent: hsl(240, 51%, 39%);
+  --color-accent0: hsl(240, 51%, 39%);
+  --color-accent1: hsl(240, 51%, 50%);
   --color-dark0: hsl(0, 0%, 11%);
   --color-dark1: hsl(240, 3%, 14%);
   --color-dark2: hsl(240, 3%, 17%);
@@ -35,6 +36,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: 0;
   margin: 0;
   letter-spacing: 0.04rem;
+  user-select: none;
 }
 h1 {
   font-size: 60px;
@@ -53,10 +55,10 @@ input[type="text"] {
   border-radius: var(--unit);
 }
 input:focus {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-accent0);
 }
-.inactive-text {
-  color: var(--color-inactive);
+.secondary-text {
+  color: var(--color-secondary);
 }
 .active-text {
   color: var(--color-active);
@@ -74,14 +76,20 @@ input:focus {
 .icon-2x {
   width: calc(var(--unit) * 2);
   height: calc(var(--unit) * 2);
+  min-width: calc(var(--unit) * 2);
+  min-height: calc(var(--unit) * 2);
 }
 .icon-3x {
   width: calc(var(--unit) * 3);
   height: calc(var(--unit) * 3);
+  min-width: calc(var(--unit) * 3);
+  min-height: calc(var(--unit) * 3);
 }
 .icon-4x {
   width: calc(var(--unit) * 4);
   height: calc(var(--unit) * 4);
+  min-width: calc(var(--unit) * 4);
+  min-height: calc(var(--unit) * 4);
 }
 .edit-icon {
   background-image: url(/images/ui/icons/edit.png);
@@ -97,6 +105,9 @@ button {
   font-family: inherit;
   cursor: pointer;
   border: none;
+}
+button:active {
+  transform: scale(0.95);
 }
 .hidden {
   display: none!important;
@@ -115,7 +126,7 @@ button {
   font-size: 1rem;
 }
 .tooltip-description {
-  color: var(--color-inactive);
+  color: var(--color-secondary);
   font-size: 0.8rem;
 }
 .program-window {
@@ -208,6 +219,10 @@ button.mode:hover {
 }
 button.mode.practice {
   font-size: 1.5rem;
+  background-color: var(--color-accent0);
+}
+button.mode.practice:hover {
+  background-color: var(--color-accent1);
 }
 .edit-panel, .item-list-panel {
   display: flex;
@@ -277,6 +292,7 @@ button.mode.practice {
   justify-content: center;
   align-items: center;
   order: 2;
+  cursor: pointer;
 }
 .add-work-button:hover {
   background-color: var(--color-dark3);
@@ -302,9 +318,14 @@ button.mode.practice {
   justify-content: center;
   align-items: center;
 }
+.add-image-text, .add-work-text {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-secondary);
+}
 .bar-vertical,.bar-horizontal {
   position: absolute;
-  background-color: var(--color-inactive);
+  background-color: var(--color-secondary);
 }
 .bar-vertical {
   width: 4px;
@@ -316,7 +337,7 @@ button.mode.practice {
 }
 .add-image-button-description {
   font-size: 0.8rem;
-  color: var(--color-inactive);
+  color: var(--color-secondary);
 }
 .dataset-list {
   display: flex;
@@ -332,7 +353,7 @@ button.mode.practice {
   display: flex;
   align-items: center;
   gap: calc(var(--unit) * 2);
-  color: var(--color-inactive);
+  color: var(--color-secondary);
   font-size: 0.8rem;
   font-weight: 600;
 }
@@ -359,7 +380,7 @@ button.mode.practice {
 .dataset-item-count {
   position: relative;
   top: calc(var(--unit) / 8);
-  color: var(--color-inactive);
+  color: var(--color-secondary);
   font-size: 0.8rem;
 }
 .dataset-description {
@@ -377,4 +398,9 @@ button.mode.practice {
 }
 .item-list-header {
 
+}
+
+.work-title {
+  display: flex;
+  align-items: center;
 }

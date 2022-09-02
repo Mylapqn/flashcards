@@ -2,6 +2,11 @@
 String.prototype.capitalize = function() {
   return this.charAt(0).toLocaleUpperCase() + this.slice(1)
 }
+String.prototype.capitalizeEach = function() {
+  let words = this.split(" ")
+  words = words.map(w => w.charAt(0).toLocaleUpperCase() + w.slice(1))
+  return words.join(" ")
+}
 String.prototype.reverse = function() {
   let array = this.split('')
   let string = array.reverse().join('')

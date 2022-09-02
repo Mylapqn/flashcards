@@ -1,6 +1,7 @@
 class ProgramUI {
   constructor() {
-    this.tooltip = Query.Q("#mouse-tooltip")
+    this.tooltip = Query.first("#mouse-tooltip")
+    this.draggedElement = null
   }
   handleInput(e) {
     if(this["handle" + e.type.capitalize()])

@@ -3,26 +3,31 @@ class Query {
     return element.querySelector(query)
   }
   static allOn(element, query) {
-    return element.querySelectorAll(query)
+    return Array.from(element.querySelectorAll(query))
   }
-  static Q(query) {
+  static first(query) {
     return document.querySelector(query)
   }
-  static Qa(query) {
+  static all(query) {
     return Array.from(document.querySelectorAll(query))
   }
 }
 class HTML {
-  static Element(tagname, classes, innerText = "", attributes = [["title", ""]]) {
+  static Element(tagname, classes, innerText = "", attributes = [["title", ""]], dataset) {
     let element = document.createElement(tagname)
     let css = classes.split(' ')
     css.forEach(cls => {
+      if(cls === "") return
       element.classList.add(cls)
     })
     attributes.forEach(attr => {
       if(attr[0] && attr[1])
         element.setAttribute(attr[0], attr[1])
     })
+    if(dataset)
+      dataset.forEach(set => {
+        element.dataset[set[0]] = set[1]
+      })
     element.innerText = innerText
     return element
   }

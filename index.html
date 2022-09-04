@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Deku Trainer</title>
+  <title>Flashcards</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -18,7 +18,7 @@
         <h2>Mylapqn and BigT's</h2>
       </div>
       <div class="main-heading">
-        <h1>DEKU Trainer</h1>
+        <h1>FLASHCARDS</h1>
       </div>
     </div>
     <div class="mode-select-container">
@@ -36,7 +36,29 @@
     <div class="chapter-wrapper">
     </div>
   </div>
-  <div class="program-window hidden" id="practice-window"></div>
+  <div class="program-window hidden" id="practice-window">
+    <div class="main-content">
+      <div class="practice-info-bar">
+        <div class="tooltip progress-bar" data-tooltiptitle="Number of questions answered">
+          <div class="questions-completed">39/50</div>
+          <div class="practice-progress-slider">
+            <div class="practice-progress-slider-inner"></div>
+          </div>
+        </div>
+        <div style="flex-grow: 1;"></div>
+        <div class="tooltip percentage-correct" data-tooltiptitle="Percentage of correct answers">
+          <div class="percentage-correct-number">50%</div>
+          <div class="percentage-correct-pie-graph"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="author-name"><h1>William Morris</h1></div>
+      </div>
+      <div class="buttons">
+        <button class="give-hint">Hint</button>
+      </div>
+    </div>
+  </div>
   <div class="program-window hidden" id="dataset-edit-window">
     <div class="main-heading">
       <h2>Datasets</h2>
@@ -79,15 +101,39 @@
         <div class="inputs">
           <div class="input-field author-name">
             <input type="text" name="" id="" placeholder="Author's name">
+            <div class="fill-with-previous-wrapper">
+              <button class="fill-with-previous">
+                <div class="background-fill fill-with-previous-icon"></div>
+              </button>
+              <div class="previous-value"></div>
+            </div>
           </div>
           <div class="input-field country">
             <input type="text" name="" id="" placeholder="Country">
+            <div class="fill-with-previous-wrapper">
+              <button class="fill-with-previous">
+                <div class="background-fill fill-with-previous-icon"></div>
+              </button>
+              <div class="previous-value"></div>
+            </div>
           </div>
           <div class="input-field time-period">
             <input type="text" name="" id="" placeholder="Time period">
+            <div class="fill-with-previous-wrapper">
+              <button class="fill-with-previous">
+                <div class="background-fill fill-with-previous-icon"></div>
+              </button>
+              <div class="previous-value"></div>
+            </div>
           </div>
           <div class="input-field style">
             <input type="text" name="" id="" placeholder="Style / Movement">
+            <div class="fill-with-previous-wrapper">
+              <button class="fill-with-previous">
+                <div class="background-fill fill-with-previous-icon"></div>
+              </button>
+              <div class="previous-value"></div>
+            </div>
           </div>
           <div class="works">
             <div class="add-work-button" tabindex="1">
@@ -110,12 +156,51 @@
                 <div class="add-image-text">ADD IMAGE</div>
               </div>
             </div>
-
           </div>
+        </div>
+        <div class="bottom-buttons">
+          <div style="flex-grow: 1;"></div>
+          <label for="ignore-empty-fields-checkbox">
+            <div class="ignore-empty-fields-checkbox-wrapper">
+              <input type="checkbox" name="ignore-empty-fields-checkbox" id="ignore-empty-fields-checkbox">
+              <span>Ignore empty fields</span>
+            </div>
+          </label>
+          <button class="add-item-button">Add item</button>
         </div>
       </div>
       <div class="item-list-panel">
-        <div class="item-list-header"></div>
+        <div class="item-list-header">
+          <div>Items</div>
+          <div class="secondary-text">0 total</div>
+        </div>
+        <div class="item-list">
+          <!-- <div class="item active" data-author="Štěpán Trvaj">
+            <div class="item-sort-widget">
+              <div class="icon icon-4x sort-widget-icon"></div>
+            </div>
+            <div class="item-header">
+              <div class="item-title">Štěpán Trvaj</div>
+              <div class="icon icon-3x delete-icon"></div>
+            </div>
+            <div class="item-works-titles secondary-text">Lamentation over the death of Bob.</div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="program-window hidden" id="practice-setup-window">
+    <div class="main-content">
+      <div class="main-heading">
+        <h1>Practice setup</h1>
+      </div>
+      <div class="setup-rows-container">
+        <div class="setup-row">
+          <div class="setup-row-label">Number of questions</div>
+        </div>
+        <div class="setup-row">
+          <div class="setup-row-label">Number of questions</div>
+        </div>
       </div>
     </div>
   </div>
@@ -130,20 +215,26 @@
   <script src="js/utility/ease.js"></script>
   <script src="js/utility/html_methods.js"></script>
 
+  <!-- windows -->
+  <script src="js/windows/program_window.js"></script>
+  <script src="js/windows/start_window.js"></script>
+  <script src="js/windows/practice_window.js"></script>
+  <script src="js/windows/practice_setup_window.js"></script>
+  <script src="js/windows/chapter_select_window.js"></script>
+  <script src="js/windows/dataset_edit_window.js"></script>
+  <script src="js/windows/edit_window.js"></script>
+  <script src="js/program_ui.js"></script>
+  <script src="js/program.js"></script>
+
   <!-- components -->
   <script src="js/work.js"></script>
   <script src="js/author.js"></script>
   <script src="js/data.js"></script>
-  <script src="js/program_window.js"></script>
-  <script src="js/start_window.js"></script>
-  <script src="js/practice_window.js"></script>
-  <script src="js/chapter_select_window.js"></script>
-  <script src="js/dataset_edit_window.js"></script>
-  <script src="js/edit_window.js"></script>
-  <script src="js/program_ui.js"></script>
-  <script src="js/program.js"></script>
 
   <!-- app -->
   <script src="js/app.js"></script>
+  <script>
+    // program.windows.set(editWindow)
+  </script>
 </body>
 </html>

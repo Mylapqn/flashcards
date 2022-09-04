@@ -14,12 +14,14 @@ class ChapterSelectWindow extends ProgramWindow {
       Query.on(this.element, ".chapter-wrapper").append(container)
     }
   }
-  handleMousedown(e) {
-    let [target] = [e.target]
+  handleClick(e) {
     let clicked = {
-      datasetCard: target.closest(".chapter-container")
+      chapter: e.target.closest(".chapter-container")
     }
-    if(clicked.datasetCard) 
-      program.startPractice(clicked.datasetCard.dataset.datasetname)
+    if(clicked.chapter) {
+      console.log(e.target)
+      program.windows.set(practiceSetupWindow)
+      practiceSetupWindow.selectDataset(clicked.chapter.dataset.datasetname)
+    }
   }
 }

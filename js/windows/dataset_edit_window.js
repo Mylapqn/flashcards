@@ -2,7 +2,7 @@ class DatasetEditWindow extends ProgramWindow {
   constructor(element) {
     super("DatasetEditWindow", element)
   }
-  handleMousedown(e) {
+  handleClick(e) {
     let clicked = {
       addDatasetBtn: e.target.closest(".add-dataset-button"),
       editIcon: e.target.closest(".edit-icon"),
@@ -22,12 +22,14 @@ class DatasetEditWindow extends ProgramWindow {
   handleKeydown(e) {
     if(e.code === "KeyA")
       this.createDataset()
+    if(e.code === "Backspace")
+      this.deleteDataset(document.activeElement.dataset.datasetname)
   }
   createDataset() {
-    let datasetName = window.prompt("Enter dataset name", "Bob's Balls")
-    let datasetDescription = window.prompt("Enter dataset description", "They're fluffy and soft, like a children's toy.")
+    let datasetName = window.prompt("Enter dataset name", "Marshmellows")
+    let datasetDescription = window.prompt("Enter dataset description", "They're fluffy and soft.")
     if(!datasetName) 
-      datasetName = "DATASET" + Object.keys(data).length
+      return
     if(data[datasetName]) 
       return console.log("Dataset already exists")
     data[datasetName] = []

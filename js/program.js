@@ -12,7 +12,8 @@ class Program {
             this.all.push(win)
       },
       set(win) {
-        if(!this.all.findChild(win)) return
+        if(!this.all.findChild(win)) 
+          return
         if(this.active instanceof ProgramWindow) 
           this.history.unshift(this.active)
         this.future = []
@@ -33,7 +34,6 @@ class Program {
         this.future.unshift(this.active)
         this.active = previous
         this.showActive()
-        this.log()
       },
       setNext() {
         if(this.future.length === 0) 
@@ -42,13 +42,13 @@ class Program {
         this.history.unshift(this.active)
         this.active = next
         this.showActive()
-        this.log()
       },
       log() {
         console.log(
           "history: ",this.history, 
           "active: ",this.active, 
-          "future: ",this.future);
+          "future: ",this.future
+        )
       }
     }
     this.UI = new ProgramUI()
@@ -70,9 +70,5 @@ class Program {
   handleMousedown(e) {
     if(e.button === 4) this.windows.setNext()
     if(e.button === 3) this.windows.setPrevious()
-  }
-  startPractice(datasetName) {
-    this.windows.set(practiceWindow)
-    practiceWindow.loadData(datasetName)
   }
 }

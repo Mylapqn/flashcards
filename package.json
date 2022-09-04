@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "start": "node ."
+  },
+  "devDependencies": {
+    "@types/node": "^18.7.14",
+    "express": "^4.18.1",
+    "mysql": "^2.18.1"
+  }
+}

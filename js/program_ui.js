@@ -8,16 +8,20 @@ class ProgramUI {
       this["handle" + e.type.capitalize()](e)
   }
   handleMousemove(e){
-    if(e.target.closest(".tooltip")) 
-      this.updateTooltip(e)
-    else
-      this.hideTooltip()
+    this.updateTooltip(e)
   }
   updateTooltip(e) {
-    this.showTooltip()
+    let tooltip = e.target.closest(".tooltip")
+    if(!tooltip) {
+      this.hideTooltip()
+      return}
+    else
+      this.showTooltip()
     let offset = 12
     this.tooltip.style.left = offset + e.clientX + "px"
     this.tooltip.style.top = offset + e.clientY + "px"
+    Query.on(this.tooltip, ".tooltip-title").innerText = tooltip.dataset.tooltiptitle
+    Query.on(this.tooltip, ".tooltip-description").innerText = tooltip.dataset.tooltipdescription || ""
   }
   showTooltip() {
     this.tooltip.classList.remove("hidden")

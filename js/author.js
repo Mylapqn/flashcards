@@ -5,6 +5,6 @@ class Author {
     this.timePeriod = timePeriod
     this.style = style
     this.notes = notes
-    this.works = works
+    this.works = works // array
   }
 }

@@ -19,6 +19,7 @@ for(let ev of listenedEvents)
   
 const program = new Program()
 const startWindow = new StartWindow(Query.first("#start-window"))
+const practiceSetupWindow = new PracticeSetupWindow(Query.first("#practice-setup-window"))
 const practiceWindow = new PracticeWindow(Query.first("#practice-window"))
 const chapterSelectWindow = new ChapterSelectWindow(Query.first("#chapter-select-window"))
 const editWindow = new EditWindow(Query.first("#edit-window"))
@@ -27,6 +28,7 @@ const datasetEditWindow = new DatasetEditWindow(Query.first("#dataset-edit-windo
 program.windows.add(
   startWindow, 
   practiceWindow,
+  practiceSetupWindow,
   chapterSelectWindow,
   editWindow,
   datasetEditWindow,

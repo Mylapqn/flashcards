@@ -13,22 +13,23 @@ class Query {
   }
 }
 class HTML {
-  static Element(tagname, classes, innerText = "", attributes = [["title", ""]], dataset) {
+  static Element(tagname, classes, innerText = "", attributes, dataset) {
     let element = document.createElement(tagname)
     let css = classes.split(' ')
     css.forEach(cls => {
       if(cls === "") return
       element.classList.add(cls)
     })
-    attributes.forEach(attr => {
-      if(attr[0] && attr[1])
-        element.setAttribute(attr[0], attr[1])
-    })
+    if(attributes)
+      attributes.forEach(attr => {
+        if(attr[0] && attr[1])
+          element.setAttribute(attr[0], attr[1])
+      })
     if(dataset)
       dataset.forEach(set => {
         element.dataset[set[0]] = set[1]
       })
-    element.innerText = innerText
+    element.innerText = innerText || ""
     return element
   }
   static SVGElement() {

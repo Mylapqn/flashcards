@@ -25,6 +25,7 @@ const chapterSelectWindow = new ChapterSelectWindow(Query.first("#chapter-select
 const editWindow = new EditWindow(Query.first("#edit-window"))
 const datasetEditWindow = new DatasetEditWindow(Query.first("#dataset-edit-window"))
 
+const mouse = new Mouse()
 program.windows.add(
   startWindow, 
   practiceWindow,

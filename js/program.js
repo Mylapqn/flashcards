@@ -60,6 +60,7 @@ class Program {
       if(this.passEvent(e))
         this.windows.active.handleInput(e)
     this.UI.handleInput(e)
+    mouse.handleInput(e)
   }
   passEvent(e) {
     if(e.button === 3 || e.button === 4)

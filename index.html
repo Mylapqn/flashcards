@@ -30,7 +30,7 @@
   </div>
   <div class="program-window hidden" id="chapter-select-window">
     <div class="main-heading">
-      <h2>Select a chapter:</h2>
+      <h2>Select training set</h2>
     </div>
     <div style="height: calc(var(--unit) * 2);"></div>
     <div class="chapter-wrapper">
@@ -105,7 +105,8 @@
               <button class="fill-with-previous">
                 <div class="background-fill fill-with-previous-icon"></div>
               </button>
-              <div class="previous-value"></div>
+              <div class="background-field"></div>
+              <div class="previous-value">Previous value</div>
             </div>
           </div>
           <div class="input-field country">
@@ -114,7 +115,8 @@
               <button class="fill-with-previous">
                 <div class="background-fill fill-with-previous-icon"></div>
               </button>
-              <div class="previous-value"></div>
+              <div class="background-field"></div>
+              <div class="previous-value">Previous value</div>
             </div>
           </div>
           <div class="input-field time-period">
@@ -123,7 +125,8 @@
               <button class="fill-with-previous">
                 <div class="background-fill fill-with-previous-icon"></div>
               </button>
-              <div class="previous-value"></div>
+              <div class="background-field"></div>
+              <div class="previous-value">Previous value</div>
             </div>
           </div>
           <div class="input-field style">
@@ -132,7 +135,8 @@
               <button class="fill-with-previous">
                 <div class="background-fill fill-with-previous-icon"></div>
               </button>
-              <div class="previous-value"></div>
+              <div class="background-field"></div>
+              <div class="previous-value">Previous value</div>
             </div>
           </div>
           <div class="works">
@@ -197,15 +201,72 @@
       <div class="setup-rows-container">
         <div class="setup-row">
           <div class="setup-row-label">Number of questions</div>
+          <div class="setup-row-content">
+            <div class="slider" id="question-number-slider" data-slidertype="number" data-sliderstep="5">
+              <div class="slider-track"></div>
+              <div class="slider-body"></div>
+              <div class="slider-handle-wrapper">
+                <div class="slider-handle"></div>
+              </div>
+            </div>
+            <div class="slider-label" data-for="question-number-slider">50</div>
+          </div>
         </div>
-        <div class="setup-row">
-          <div class="setup-row-label">Number of questions</div>
+      </div>
+      <div class="bottom-buttons">
+        <button class="start-practice">START</button>
+      </div>
+    </div>
+    <div class="dialog-window" id="select-training-method-window">
+      <div class="main-heading center-content">
+        <h2>Select training method</h2>
+      </div>
+      <div class="card-side card-side-a">
+        <div class="card-side-label">A</div>
+        <div class="card-row">
+          <div class="card-row-sort-widget">
+            <div class="icon icon-4x sort-widget-icon"></div>
+          </div>
+          <div class="card-row-title">Author's name</div>
         </div>
+      </div>
+      <div class="card-side card-side-b">
+        <div class="card-side-label">B</div>        
+        <div class="card-row">
+          <div class="card-row-sort-widget">
+            <div class="icon icon-4x sort-widget-icon"></div>
+          </div>
+          <div class="card-row-title">Country</div>
+        </div>
+        <div class="card-row">
+          <div class="card-row-sort-widget">
+            <div class="icon icon-4x sort-widget-icon"></div>
+          </div>
+          <div class="card-row-title">Time period</div>
+        </div>
+        <div class="card-row">
+          <div class="card-row-sort-widget">
+            <div class="icon icon-4x sort-widget-icon"></div>
+          </div>
+          <div class="card-row-title">Style / Movement</div>
+        </div>
+        <div class="card-row">
+          <div class="card-row-sort-widget">
+            <div class="icon icon-4x sort-widget-icon"></div>
+          </div>
+          <div class="card-row-title">List of works</div>
+        </div>
+      </div>
+      <div style="flex-grow: 1;"></div>
+      <div class="bottom-buttons">
+        <button class="confirm-training-method">CONFIRM</button>
       </div>
     </div>
   </div>
 
   <!-- utility -->
+  <script src="js/utility/mouse.js"></script>
+  <script src="js/utility/vector.js"></script>
   <script src="js/utility/json.js"></script>
   <script src="js/utility/state.js"></script>
   <script src="js/utility/switch.js"></script>
@@ -217,6 +278,7 @@
 
   <!-- windows -->
   <script src="js/windows/program_window.js"></script>
+  <script src="js/windows/dialog_window.js"></script>
   <script src="js/windows/start_window.js"></script>
   <script src="js/windows/practice_window.js"></script>
   <script src="js/windows/practice_setup_window.js"></script>

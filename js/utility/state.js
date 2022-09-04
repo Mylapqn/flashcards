@@ -1,6 +1,8 @@
 class State {
   constructor(...values) {
     this.values = values
+    this.history = []
+    this.future = []
     this.current =  values[0]
     this.previous = values[0]
   }
@@ -9,6 +11,7 @@ class State {
     if(val) {
       this.previous = this.current
       this.current = val
+      console.log(val)
     }
     else {
       console.log('invalid value')

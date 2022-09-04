@@ -56,6 +56,9 @@
       </div>
       <div class="buttons">
         <button class="give-hint">Hint</button>
+        <div style="flex-grow: 1;"></div>
+        <button class="fail-button">Fail</button>
+        <button class="pass-button">Pass</button>
       </div>
     </div>
   </div>
@@ -217,48 +220,55 @@
         <button class="start-practice">START</button>
       </div>
     </div>
-    <div class="dialog-window" id="select-training-method-window">
+    <div class="dialog-window" id="custom-training-method-window">
       <div class="main-heading center-content">
-        <h2>Select training method</h2>
+        <h2>Custom training method</h2>
       </div>
-      <div class="card-side card-side-a">
-        <div class="card-side-label">A</div>
-        <div class="card-row">
+      <div class="card-side card-side-a" data-dragtarget="true" data-dragaccept="card-row">
+        <div class="card-side-label tooltip" data-tooltiptitle="You'll see this side first.">A</div>
+        <div class="card-row" data-draggable="true" data-dragtype="card-row">
           <div class="card-row-sort-widget">
             <div class="icon icon-4x sort-widget-icon"></div>
           </div>
           <div class="card-row-title">Author's name</div>
         </div>
       </div>
-      <div class="card-side card-side-b">
-        <div class="card-side-label">B</div>        
-        <div class="card-row">
+      <div class="card-side card-side-b" data-dragtarget="true" data-dragaccept="card-row">
+        <div class="card-side-label tooltip" data-tooltiptitle="This side contains the answers.">B</div>        
+        <div class="card-row" data-draggable="true" data-dragtype="card-row">
           <div class="card-row-sort-widget">
             <div class="icon icon-4x sort-widget-icon"></div>
           </div>
           <div class="card-row-title">Country</div>
         </div>
-        <div class="card-row">
+        <div class="card-row" data-draggable="true" data-dragtype="card-row">
           <div class="card-row-sort-widget">
             <div class="icon icon-4x sort-widget-icon"></div>
           </div>
           <div class="card-row-title">Time period</div>
         </div>
-        <div class="card-row">
+        <div class="card-row" data-draggable="true" data-dragtype="card-row">
           <div class="card-row-sort-widget">
             <div class="icon icon-4x sort-widget-icon"></div>
           </div>
           <div class="card-row-title">Style / Movement</div>
         </div>
-        <div class="card-row">
+        <div class="card-row" data-draggable="true" data-dragtype="card-row">
           <div class="card-row-sort-widget">
             <div class="icon icon-4x sort-widget-icon"></div>
           </div>
           <div class="card-row-title">List of works</div>
         </div>
+        <div class="card-row" data-draggable="true" data-dragtype="card-row">
+          <div class="card-row-sort-widget">
+            <div class="icon icon-4x sort-widget-icon"></div>
+          </div>
+          <div class="card-row-title">Picture of one of their works</div>
+        </div>
       </div>
       <div style="flex-grow: 1;"></div>
       <div class="bottom-buttons">
+        <button class="cancel-training-method">CANCEL</button>
         <button class="confirm-training-method">CONFIRM</button>
       </div>
     </div>
@@ -288,6 +298,8 @@
   <script src="js/program_ui.js"></script>
   <script src="js/program.js"></script>
 
+  <!-- dialog windows -->
+  <script src="js/dialog_windows/custom_training_method_window.js"></script>
   <!-- components -->
   <script src="js/work.js"></script>
   <script src="js/author.js"></script>
@@ -296,7 +308,7 @@
   <!-- app -->
   <script src="js/app.js"></script>
   <script>
-    // program.windows.set(editWindow)
+    program.windows.set(practiceSetupWindow)
   </script>
 </body>
 </html>

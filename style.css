@@ -20,13 +20,20 @@
   --color-light2: hsl(235, 6%, 64%);
   --color-light3: hsl(235, 5%, 54%);
   --color-light4: hsl(234, 4%, 47%);
-  --color-secondary: hsl(228, 2%, 46%);
+  --color-secondary0: hsl(228, 2%, 46%);
+  --color-secondary1: hsl(228, 2%, 53%);
   --color-active: hsl(220, 33%, 98%);
   --color-accent0: hsl(240, 49%, 19%);
   --color-accent1: hsl(240, 49%, 26%);
   --color-accent2: hsl(240, 52%, 33%);
   --color-accent3: hsl(240, 51%, 39%);
   --color-accent4: hsl(240, 51%, 50%);
+  --color-warning0: hsl(3, 56%, 16%);
+  --color-warning1: hsl(3, 60%, 21%);
+  --color-warning2: hsl(3, 58%, 27%);
+  --color-warning3: hsl(3, 63%, 32%);
+  --color-warning4: hsl(3, 63%, 38%);
+
 }
 ::-webkit-scrollbar {
   width: calc(var(--unit) * 1);
@@ -88,7 +95,7 @@ input:focus {
   align-items: center;
 }
 .secondary-text {
-  color: var(--color-secondary);
+  color: var(--color-secondary0);
 }
 .active-text {
   color: var(--color-active);
@@ -170,7 +177,7 @@ button:active {
   font-size: 1rem;
 }
 .tooltip-description {
-  color: var(--color-secondary);
+  color: var(--color-secondary0);
   font-size: 0.8rem;
 }
 .program-window {
@@ -418,11 +425,11 @@ button.fill-with-previous {
 .add-image-text, .add-work-text {
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--color-secondary);
+  color: var(--color-secondary0);
 }
 .bar-vertical,.bar-horizontal {
   position: absolute;
-  background-color: var(--color-secondary);
+  background-color: var(--color-secondary0);
 }
 .bar-vertical {
   width: 4px;
@@ -434,7 +441,7 @@ button.fill-with-previous {
 }
 .add-image-button-description {
   font-size: 0.8rem;
-  color: var(--color-secondary);
+  color: var(--color-secondary0);
 }
 .dataset-list {
   display: flex;
@@ -450,7 +457,7 @@ button.fill-with-previous {
   display: flex;
   align-items: center;
   gap: calc(var(--unit) * 2);
-  color: var(--color-secondary);
+  color: var(--color-secondary0);
   font-size: 0.8rem;
   font-weight: 600;
 }
@@ -477,7 +484,7 @@ button.fill-with-previous {
 .dataset-item-count {
   position: relative;
   top: calc(var(--unit) / 8);
-  color: var(--color-secondary);
+  color: var(--color-secondary0);
   font-size: 0.8rem;
 }
 .dataset-description {
@@ -573,7 +580,10 @@ button.fill-with-previous {
   color: var(--color-light0);
 }
 #practice-window .buttons {
+  display: flex;
+  width: 90%;
   height: calc(var(--unit) * 8);
+  gap: calc(var(--unit) * 2);
 }
 #practice-window .main-content {
   display: flex;
@@ -596,15 +606,34 @@ button.fill-with-previous {
   border-radius: calc(var(--unit) * 2);
   z-index: 1;
 }
-.give-hint {
+button.give-hint,
+button.fail-button,
+button.pass-button {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: calc(var(--unit) * 2) calc(var(--unit) * 3);
   color: var(--color-light0);
-  background-color: var(--color-accent3);
   border-radius: var(--unit);
   font-size: 1.2rem;
+}
+button.give-hint {
+  background-color: var(--color-accent3);
+}
+button.fail-button {
+  background-color: var(--color-warning3);
+}
+button.pass-button {
+  background-color: var(--color-accent3);
+}
+button.give-hint:hover {
+  background-color: var(--color-accent4);
+}
+button.fail-button:hover {
+  background-color: var(--color-warning4);
+}
+button.pass-button:hover {
+  background-color: var(--color-accent4);
 }
 .progress-bar {
   display: flex;
@@ -749,9 +778,12 @@ button.start-practice:hover {
   display: flex;
   flex-direction: column;
   gap: calc(var(--unit) * 1);
+  min-height: calc(var(--unit) * 8);
   width: 100%;
   padding: calc(var(--unit) * 2) calc(var(--unit) * 2) calc(var(--unit) * 2) calc(var(--unit) * 16);
   border-radius: calc(var(--unit) * 2);
+  outline: 2px solid transparent;
+  transition: height 0.5s linear;
 }
 .card-side-a {
   background-color: var(--color-accent2);
@@ -767,9 +799,15 @@ button.start-practice:hover {
   left: calc(var(--unit) * 4);
   top: 0;
   font-size: 2.6rem;
-  color: var(--color-secondary);
+  color: var(--color-secondary0);
 }
-#select-training-method-window {
+.card-side-label:hover {
+  color: var(--color-secondary1);
+}
+.can-drop {
+  outline: 2px solid var(--color-accent3);
+}
+#custom-training-method-window {
   background-color: var(--color-dark2);
   width: 500px;
   height: 600px;
@@ -786,8 +824,8 @@ button.start-practice:hover {
   height: calc(var(--unit) * 4);
   padding: calc(var(--unit) * 1);
   border-radius: var(--unit);
+  cursor: grabbing;
 }
-
 .card-side-a .card-row {
   background-color: var(--color-accent0);
 }
@@ -800,16 +838,20 @@ button.start-practice:hover {
 .card-side-b .card-row:hover {
   background-color: var(--color-dark3);
 }
-
 .card-row-sort-widget {
   position: absolute;
   left: calc(var(--unit) * -5);
 }
-
-button.confirm-training-method {
+button.confirm-training-method,
+button.cancel-training-method {
   font-size: 1.2rem;
-  background-color: var(--color-accent3);
   color: var(--color-light0);
   border-radius: var(--unit);
   padding: calc(var(--unit) * 2);
+}
+button.confirm-training-method {
+  background-color: var(--color-accent3);
+}
+button.cancel-training-method {
+  background-color: var(--color-dark4);
 }

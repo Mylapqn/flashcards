@@ -25,7 +25,10 @@ const chapterSelectWindow = new ChapterSelectWindow(Query.first("#chapter-select
 const editWindow = new EditWindow(Query.first("#edit-window"))
 const datasetEditWindow = new DatasetEditWindow(Query.first("#dataset-edit-window"))
 
+const customTrainingMethodWindow = new CustomTrainingMethodWindow(Query.first("#custom-training-method-window"))
+
 const mouse = new Mouse()
+
 program.windows.add(
   startWindow, 
   practiceWindow,
@@ -34,4 +37,5 @@ program.windows.add(
   editWindow,
   datasetEditWindow,
 )
+practiceSetupWindow.addDialogWindow(customTrainingMethodWindow)
 program.windows.set(startWindow)

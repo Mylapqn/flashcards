@@ -18,7 +18,7 @@ class EditWindow extends ProgramWindow {
       fillPreviousBtn: e.target.closest("button.fill-with-previous"),
     }
     if(clicked.addWorkBtn)
-      this.createWorkItem()
+      this.createWorkHTML()
     if(clicked.item)
       this.selectAuthor(clicked.item.dataset.author, clicked.item)
     if(clicked.addItemBtn)
@@ -61,6 +61,8 @@ class EditWindow extends ProgramWindow {
     })
     formData.append("dataset_id", this.datasetId)
     Server.insertAuthor(formData)
+    this.updatePreviousValues()
+    this.clearInputs()
   }
   createAuthorHTML(author) {
     console.log("created author item for", author.author_name)
@@ -103,9 +105,9 @@ class EditWindow extends ProgramWindow {
     let params = ["Work1", "Description", this.selectedAuthor.name]
     this.selectedAuthor.works.push(
       new Work(...params))
-    this.createWorkItem(...params)
+    this.createWorkHTML(...params)
   }
-  createWorkItem(workTitle, workDescription, authorName) {
+  createWorkHTML(workTitle, workDescription, authorName) {
     let item =          HTML.Element("div", "work")
     let title =         HTML.Element("div", "work-title", workTitle)
     let button =        HTML.Element("div", "add-image-button")
@@ -131,9 +133,24 @@ class EditWindow extends ProgramWindow {
 
   }
   fillPreviousValue(button) {
-    console.log("f");
-    let previoutValue = Query.on(this.element, `.previous-value[data-forinput='${button.dataset.forinput}']`).innerText
-    Query.on(this.element, `input[name='${button.dataset.forinput}']`).value = previoutValue
+    let previousValue = Query.on(this.element, `.previous-value[data-forinput='${button.dataset.forinput}']`).innerText
+    Query.on(this.element, `input[name='${button.dataset.forinput}']`).value = previousValue
+  }
+  updatePreviousValues() {
+    Query
+    .allOn(this.element, ".fill-with-previous-wrapper .previous-value")
+    .forEach(val => {
+      let prevValue = Query.on(this.element, "input[type='text'][name='" + val.dataset.forinput + "'").value
+      if(prevValue)
+        val.innerText = prevValue
+    })
+  }
+  clearInputs() {
+    Query
+    .allOn(this.element, "input[type='text']")
+    .forEach(input => {
+      input.value = ""
+    })
   }
   //#region parse input
   parseAuthorName(input) {

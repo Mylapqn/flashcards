@@ -368,6 +368,7 @@ button.mode.practice:hover {
   z-index: 1;
   font-size: 0.8rem;
   color: var(--color-light3);
+  user-select: none;
 }
 
 button.fill-with-previous {
@@ -379,6 +380,9 @@ button.fill-with-previous {
   align-items: center;
   justify-content: center;
   z-index: 1;
+}
+button.fill-with-previous:hover {
+  background-color: var(--color-accent4);
 }
 
 .works {

@@ -22,8 +22,8 @@ class HTML {
     })
     if(attributes)
       attributes.forEach(attr => {
-        if(attr[0] && attr[1])
-          element.setAttribute(attr[0], attr[1])
+        if(attr[0])
+          element.setAttribute(attr[0], attr[1] || "")
       })
     if(dataset)
       dataset.forEach(set => {
@@ -35,7 +35,7 @@ class HTML {
   static SVGElement() {
     
   }
-  static elementHasClasses(...classes) {
+  static hasClasses(...classes) {
     let predicate = true
     classes.forEach(cls => {
       if(element.classList.contains(cls) === false) 

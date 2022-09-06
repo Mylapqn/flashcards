@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Flashcards</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="icons.css">
 </head>
 <body>
   <div id="mouse-tooltip" class="hidden">
@@ -33,12 +34,11 @@
       <h2>Select training set</h2>
     </div>
     <div style="height: calc(var(--unit) * 2);"></div>
-    <div class="chapter-wrapper">
-    </div>
+    <div class="chapter-wrapper"></div>
   </div>
   <div class="program-window hidden" id="practice-window">
     <div class="main-content">
-      <div class="practice-info-bar">
+      <div class="practice-info-bar" data-zenhide="true">
         <div class="tooltip progress-bar" data-tooltiptitle="Number of questions answered">
           <div class="questions-completed">39/50</div>
           <div class="practice-progress-slider">
@@ -46,6 +46,9 @@
           </div>
         </div>
         <div style="flex-grow: 1;"></div>
+        <button class="zen-mode-button tooltip" data-tooltiptitle="Focus">
+          <div class="icon icon-4x zen-icon"></div>
+        </button>
         <div class="tooltip percentage-correct" data-tooltiptitle="Percentage of correct answers">
           <div class="percentage-correct-number">50%</div>
           <div class="percentage-correct-pie-graph"></div>
@@ -54,7 +57,7 @@
       <div class="card">
         <div class="author-name"><h1>William Morris</h1></div>
       </div>
-      <div class="buttons">
+      <div class="buttons" data-zenhide="true">
         <button class="give-hint">Hint</button>
         <div style="flex-grow: 1;"></div>
         <button class="fail-button">Fail</button>
@@ -68,7 +71,7 @@
     </div>
     <div style="height: calc(var(--unit) * 2);"></div>
     <div class="dataset-list">
-      <div class="dataset-item" data-datasetname="DEKU1" tabindex="0">
+      <!-- <div class="dataset-item" data-datasetname="DEKU1" tabindex="0">
         <div class="buttons">
           <div class="icon icon-3x edit-icon"></div>
           <div class="icon icon-3x delete-icon"></div>
@@ -78,7 +81,7 @@
           <span class="dataset-item-count">69 items</span>
         </div>
         <div class="dataset-description">This is the vanilla experience. Recommended for new players.</div>
-      </div>
+      </div> -->
       <div class="add-dataset-button">
           <div class="icon-4x plus-sign">
             <div class="bar-vertical"></div>
@@ -101,45 +104,48 @@
         <div class="main-heading">
           <h1>Add new item</h1>
         </div>
-        <div class="inputs">
+          <div class="inputs" id="edit-form">
           <div class="input-field author-name">
-            <input type="text" name="" id="" placeholder="Author's name">
-            <div class="fill-with-previous-wrapper">
-              <button class="fill-with-previous">
-                <div class="background-fill fill-with-previous-icon"></div>
-              </button>
-              <div class="background-field"></div>
-              <div class="previous-value">Previous value</div>
-            </div>
+            <input type="text" name="author_name" id="" placeholder="Author's name">
           </div>
           <div class="input-field country">
-            <input type="text" name="" id="" placeholder="Country">
+            <input type="text" name="country" id="" placeholder="Country">
             <div class="fill-with-previous-wrapper">
-              <button class="fill-with-previous">
+              <button class="fill-with-previous" data-forinput="country">
                 <div class="background-fill fill-with-previous-icon"></div>
               </button>
               <div class="background-field"></div>
-              <div class="previous-value">Previous value</div>
+              <div class="previous-value" data-forinput="country">Previous value</div>
             </div>
           </div>
           <div class="input-field time-period">
-            <input type="text" name="" id="" placeholder="Time period">
+            <input type="text" name="time_period" id="" placeholder="Time period">
             <div class="fill-with-previous-wrapper">
-              <button class="fill-with-previous">
+              <button class="fill-with-previous" data-forinput="time_period">
                 <div class="background-fill fill-with-previous-icon"></div>
               </button>
               <div class="background-field"></div>
-              <div class="previous-value">Previous value</div>
+              <div class="previous-value" data-forinput="time_period">Previous value</div>
             </div>
           </div>
           <div class="input-field style">
-            <input type="text" name="" id="" placeholder="Style / Movement">
+            <input type="text" name="style_movement" id="" placeholder="Style / Movement">
             <div class="fill-with-previous-wrapper">
-              <button class="fill-with-previous">
+              <button class="fill-with-previous" data-forinput="style_movement">
                 <div class="background-fill fill-with-previous-icon"></div>
               </button>
               <div class="background-field"></div>
-              <div class="previous-value">Previous value</div>
+              <div class="previous-value" data-forinput="style_movement">Previous value</div>
+            </div>
+          </div>
+          <div class="input-field note">
+            <input type="text" name="note" id="" placeholder="Note">
+            <div class="fill-with-previous-wrapper">
+              <button class="fill-with-previous" data-forinput="note">
+                <div class="background-fill fill-with-previous-icon"></div>
+              </button>
+              <div class="background-field"></div>
+              <div class="previous-value" data-forinput="note">Previous value</div>
             </div>
           </div>
           <div class="works">
@@ -152,10 +158,11 @@
             </div>
             <div class="work">
               <div class="work-title">
-                <input type="text" name="" id="" placeholder="Name">
+                <input type="text" name="work_title" id="" placeholder="Name">
                 <div class="icon icon-3x delete-icon"></div>
               </div>
               <div class="add-image-button">
+                <input class="add-work-image-input" type="file" name="" id="">
                 <div class="icon-4x plus-sign">
                   <div class="bar-vertical"></div>
                   <div class="bar-horizontal"></div>
@@ -181,17 +188,8 @@
           <div>Items</div>
           <div class="secondary-text">0 total</div>
         </div>
-        <div class="item-list">
-          <!-- <div class="item active" data-author="Štěpán Trvaj">
-            <div class="item-sort-widget">
-              <div class="icon icon-4x sort-widget-icon"></div>
-            </div>
-            <div class="item-header">
-              <div class="item-title">Štěpán Trvaj</div>
-              <div class="icon icon-3x delete-icon"></div>
-            </div>
-            <div class="item-works-titles secondary-text">Lamentation over the death of Bob.</div>
-          </div> -->
+        <div class="item-list" data-dragtarget="true" data-dragaccept="item">
+
         </div>
       </div>
     </div>
@@ -300,15 +298,21 @@
 
   <!-- dialog windows -->
   <script src="js/dialog_windows/custom_training_method_window.js"></script>
+
   <!-- components -->
   <script src="js/work.js"></script>
   <script src="js/author.js"></script>
+
+  <!-- server communication -->
+  <script src="js/server.js"></script>
+
+  <!-- data -->
   <script src="js/data.js"></script>
 
   <!-- app -->
   <script src="js/app.js"></script>
   <script>
-    program.windows.set(practiceSetupWindow)
+    program.windows.set(datasetEditWindow)
   </script>
 </body>
 </html>

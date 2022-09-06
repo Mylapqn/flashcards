@@ -3,7 +3,7 @@ let data = {
     //instances of Item
     {
       name: "Štěpán Trvaj",
-      country: "Belgium",
+      country: "Česká republika",
       timePeriod: "",
       style: "",
       notes: "",
@@ -16,7 +16,23 @@ let data = {
           ],
         },
       ],
-    }
+    },
+    {
+      name: "Matouš Marek",
+      country: "Belgium",
+      timePeriod: "",
+      style: "",
+      notes: "",
+      works: [
+        {
+          title: "The death of bob.",
+          description: "",
+          images: [
+            "./images/img.webp",
+          ],
+        },
+      ],
+    },
   ],
   "DEKU2": [
     //instances of Item

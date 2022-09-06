@@ -5,7 +5,6 @@ class CustomTrainingMethodWindow extends DialogWindow {
     this.sideB = Query.on(this.element, ".card-side-b")
   }
   handleClick(e) {
-    console.log("f");
     let clicked = {
       cardRow: e.target.closest(".card-row")
     }

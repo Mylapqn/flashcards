@@ -39,3 +39,36 @@ program.windows.add(
 )
 practiceSetupWindow.addDialogWindow(customTrainingMethodWindow)
 program.windows.set(startWindow)
+
+// const http = new XMLHttpRequest()
+// http.open("GET", "http://127.0.0.1:5501")
+// http.send()
+// http.onreadystatechange = (response) => {
+//   console.log(response)
+// }
+// fetch("http://127.0.0.1:5501")
+//   .then((response) => response.json())
+//   .then(json => console.log(json))
+// const xhr = new XMLHttpRequest()
+// xhr.open("POST", "http://127.0.0.1:5501", true)
+// xhr.setRequestHeader("Content-Type", "application/json")
+// xhr.send(
+//   JSON.stringify(
+//     {
+//       name: "Štěpán Trvaj",
+//       country: "Česká republika",
+//       timePeriod: "",
+//       style: "",
+//       notes: "",
+//       works: [
+//         {
+//           title: "Lamentation over the death of Bob.",
+//           description: "",
+//           images: [
+//             "./images/img.webp",
+//           ],
+//         },
+//       ],
+//     }
+//   )
+// )

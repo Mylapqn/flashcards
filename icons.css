@@ -1,0 +1,60 @@
+.icon {
+  background-attachment: local;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  border-radius: calc(var(--unit) * 0.5);
+}
+
+.icon:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.icon-2x {
+  width: calc(var(--unit) * 2);
+  height: calc(var(--unit) * 2);
+  min-width: calc(var(--unit) * 2);
+  min-height: calc(var(--unit) * 2);
+}
+
+.icon-3x {
+  width: calc(var(--unit) * 3);
+  height: calc(var(--unit) * 3);
+  min-width: calc(var(--unit) * 3);
+  min-height: calc(var(--unit) * 3);
+}
+
+.icon-4x {
+  width: calc(var(--unit) * 4);
+  height: calc(var(--unit) * 4);
+  min-width: calc(var(--unit) * 4);
+  min-height: calc(var(--unit) * 4);
+}
+
+.edit-icon {
+  background-image: url(/images/ui/icons/edit.png);
+}
+
+.delete-icon {
+  background-image: url(/images/ui/icons/trashcan.png);
+}
+
+.back-icon {
+  background-image: url(/images/ui/icons/back.png);
+}
+
+.zen-icon {
+  background-image: url(/images/ui/icons/eye_open.png);
+}
+
+.zen-icon.active {
+  background-image: url(/images/ui/icons/eye_closed.png);
+}
+
+.sort-widget-icon {
+  background-image: url(/images/ui/icons/sort_widget.png);
+}
+
+.fill-with-previous-icon {
+  background-image: url(/images/ui/icons/fill_with_previous.png);
+}

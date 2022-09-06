@@ -1,6 +1,7 @@
 class DatasetEditWindow extends ProgramWindow {
   constructor(element) {
     super("DatasetEditWindow", element)
+    this.loadDatasets()
   }
   handleClick(e) {
     let clicked = {
@@ -13,7 +14,7 @@ class DatasetEditWindow extends ProgramWindow {
       this.createDataset()
     if(clicked.editIcon) {
       program.windows.set(editWindow)
-      editWindow.loadDataset(clicked.datasetCard.dataset.datasetname)
+      editWindow.loadDataset(clicked.datasetCard.dataset.datasetname, clicked.datasetCard.dataset.id)
     }
     if(clicked.deleteIcon) {
       this.deleteDataset(clicked.datasetCard.dataset.datasetname)
@@ -27,23 +28,30 @@ class DatasetEditWindow extends ProgramWindow {
   }
   createDataset() {
     let datasetName = window.prompt("Enter dataset name", "Marshmellows")
-    let datasetDescription = window.prompt("Enter dataset description", "They're fluffy and soft.")
-    if(!datasetName) 
+    let datasetDescription = window.prompt("Enter dataset description", "They're fluffy and soft.") || ""
+    if(!datasetName)  
       return
-    if(data[datasetName]) 
-      return console.log("Dataset already exists")
-    data[datasetName] = []
-    this.createDatasetHTML(datasetName, datasetDescription) 
+    Server.insertDataset(datasetName, datasetDescription)
   }
   deleteDataset(datasetName) {
     if(window.confirm("Delete " + datasetName + "?")) {
-      delete data[datasetName]
+      Server.deleteDataset(datasetName)
       Query.on(this.element, `.dataset-item[data-datasetname="${datasetName}"]`)
       .remove()
     }
   }
-  createDatasetHTML(datasetName, datasetDescription) {
-    let container   = HTML.Element("div", "dataset-item", "", [["tabindex", "0"]], [["datasetname", datasetName]])
+  loadDatasets() {
+    //GET data from server and update the HTML
+    Server.getDatasets(this)
+  }
+  receiveData(data) {
+    console.log(data)
+    for(let key in data) 
+      if(data[key].dataset_name)
+        this.createDatasetHTML(data[key].id, data[key].dataset_name, data[key].dataset_description)
+  }
+  createDatasetHTML(id, datasetName, datasetDescription) {
+    let container   = HTML.Element("div", "dataset-item", "", [["tabindex", "0"]], [["datasetname", datasetName], ["id", id]])
     let buttons     = HTML.Element("div", "buttons")
     let description = HTML.Element("div", "dataset-description", datasetDescription)
     let header      = HTML.Element("div", "dataset-header")
@@ -54,7 +62,6 @@ class DatasetEditWindow extends ProgramWindow {
     header.append(title, itemCount)
     buttons.append(iconEdit, iconDelete)
     container.append(buttons, header, description)
-
     this.element.querySelector(".dataset-list").append(container)
   }
 }

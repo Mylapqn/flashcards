@@ -22,7 +22,7 @@ class ProgramUI {
     if(clicked.draggable)
       this.dragBegin(clicked.draggable)
   }
-  handleMousemove(e){
+  handleMousemove(e) {
     this.updateTooltip(e)
     if(this.state.is("dragging-element"))
       this.dragUpdate(e)

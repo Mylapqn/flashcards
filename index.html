@@ -13,6 +13,11 @@
     <div class="tooltip-title">Title</div>
     <div class="tooltip-description">Thingy</div>
   </div>
+  <div id="top-level-back-button">
+    <div class="back-button" onclick="program.windows.setPrevious()">
+      <div class="icon icon-4x back-icon"></div>
+    </div>
+  </div>
   <div class="program-window hidden" id="start-window">
     <div class="start-title">
       <div class="subheading">
@@ -71,17 +76,6 @@
     </div>
     <div style="height: calc(var(--unit) * 2);"></div>
     <div class="dataset-list">
-      <!-- <div class="dataset-item" data-datasetname="DEKU1" tabindex="0">
-        <div class="buttons">
-          <div class="icon icon-3x edit-icon"></div>
-          <div class="icon icon-3x delete-icon"></div>
-        </div>
-        <div class="dataset-header">
-          <span class="dataset-title">DEKU1</span>
-          <span class="dataset-item-count">69 items</span>
-        </div>
-        <div class="dataset-description">This is the vanilla experience. Recommended for new players.</div>
-      </div> -->
       <div class="add-dataset-button">
           <div class="icon-4x plus-sign">
             <div class="bar-vertical"></div>
@@ -106,10 +100,11 @@
         </div>
           <div class="inputs" id="edit-form">
           <div class="input-field author-name">
-            <input type="text" name="author_name" id="" placeholder="Author's name">
+            <input tabindex="1" type="text" name="author_name" id="" placeholder="Author's name">
           </div>
           <div class="input-field country">
-            <input type="text" name="country" id="" placeholder="Country">
+            <input tabindex="1" type="text" name="country" id="" placeholder="Country">
+            <button class="select-all-text">...</button>
             <div class="fill-with-previous-wrapper">
               <button class="fill-with-previous" data-forinput="country">
                 <div class="background-fill fill-with-previous-icon"></div>
@@ -119,7 +114,8 @@
             </div>
           </div>
           <div class="input-field time-period">
-            <input type="text" name="time_period" id="" placeholder="Time period">
+            <input tabindex="1" type="text" name="time_period" id="" placeholder="Time period">
+            <button class="select-all-text">...</button>
             <div class="fill-with-previous-wrapper">
               <button class="fill-with-previous" data-forinput="time_period">
                 <div class="background-fill fill-with-previous-icon"></div>
@@ -129,7 +125,8 @@
             </div>
           </div>
           <div class="input-field style">
-            <input type="text" name="style_movement" id="" placeholder="Style / Movement">
+            <input tabindex="1" type="text" name="style_movement" id="" placeholder="Style / Movement">
+            <button class="select-all-text">...</button>
             <div class="fill-with-previous-wrapper">
               <button class="fill-with-previous" data-forinput="style_movement">
                 <div class="background-fill fill-with-previous-icon"></div>
@@ -139,7 +136,8 @@
             </div>
           </div>
           <div class="input-field note">
-            <input type="text" name="note" id="" placeholder="Note">
+            <input tabindex="1" type="text" name="note" id="" placeholder="Note">
+            <button class="select-all-text">...</button>
             <div class="fill-with-previous-wrapper">
               <button class="fill-with-previous" data-forinput="note">
                 <div class="background-fill fill-with-previous-icon"></div>
@@ -156,20 +154,6 @@
               </div>
               <div class="add-work-text">ADD WORK</div>
             </div>
-            <!-- <div class="work">
-              <div class="work-title">
-                <input type="text" name="work_title" id="" placeholder="Name">
-                <div class="icon icon-3x delete-icon"></div>
-              </div>
-              <div class="add-image-button">
-                <input class="add-work-image-input" type="file" name="" id="">
-                <div class="icon-4x plus-sign">
-                  <div class="bar-vertical"></div>
-                  <div class="bar-horizontal"></div>
-                </div>
-                <div class="add-image-text">ADD IMAGE</div>
-              </div>
-            </div> -->
           </div>
         </div>
         <div class="bottom-buttons">
@@ -189,7 +173,6 @@
           <div class="secondary-text">0 total</div>
         </div>
         <div class="item-list" data-dragtarget="true" data-dragaccept="item">
-
         </div>
       </div>
     </div>
@@ -201,16 +184,63 @@
       </div>
       <div class="setup-rows-container">
         <div class="setup-row">
-          <div class="setup-row-label">Number of questions</div>
+          <div class="setup-row-label">Dataset</div>
           <div class="setup-row-content">
-            <div class="slider" id="question-number-slider" data-slidertype="number" data-sliderstep="5">
+            <button class="select-dataset-button">DATASET NAME</button>
+          </div>
+        </div>
+        <div class="setup-row">
+          <div class="setup-row-label">Number of cards</div>
+          <div class="setup-row-content">
+            <div class="slider" id="question-number-slider" 
+              data-slidertype="number" 
+              data-sliderstep="5" 
+              data-slidermax="100" 
+              data-slidermin="5"
+              >
               <div class="slider-track"></div>
               <div class="slider-body"></div>
               <div class="slider-handle-wrapper">
                 <div class="slider-handle"></div>
               </div>
+              <div class="slider-label" data-for="question-number-slider">5</div>
             </div>
-            <div class="slider-label" data-for="question-number-slider">50</div>
+          </div>
+        </div>
+        <div class="setup-info-row">
+          <div class="icon icon-2x info-icon icon-no-hover"></div>
+          Training set only contains X entries. Some cards may repeat.
+        </div>
+        <div class="setup-row vertical">
+          <div class="setup-row-title">Training method</div>
+          <div class="setup-row-content">
+            <div class="training-cards-container">
+              <div class="training-preview-card selected" data-fields-a="author_name" data-fields-b="works">
+                <div class="side-a">
+                  Author
+                </div>
+                <div class="card-divider"></div>
+                <div class="side-b">
+                  Works
+                </div>
+              </div>
+              <div class="training-preview-card" data-fields-a="random_work_picture" data-fields-b="author_name">
+                <div class="side-a">
+                  Picture
+                </div>
+                <div class="card-divider"></div>
+                <div class="side-b">
+                  Author
+                </div>
+              </div>
+            </div>
+            <button class="set-custom-training-method">
+              <div class="icon-2x plus-sign">
+                <div class="bar-vertical"></div>
+                <div class="bar-horizontal"></div>
+              </div>
+              <div class="button-text">CUSTOM</div>
+            </button>
           </div>
         </div>
       </div>
@@ -218,50 +248,68 @@
         <button class="start-practice">START</button>
       </div>
     </div>
-    <div class="dialog-window" id="custom-training-method-window">
+    <div class="dialog-window hidden" id="custom-training-method-window">
       <div class="main-heading center-content">
         <h2>Custom training method</h2>
       </div>
       <div class="card-side card-side-a" data-dragtarget="true" data-dragaccept="card-row">
         <div class="card-side-label tooltip" data-tooltiptitle="You'll see this side first.">A</div>
-        <div class="card-row" data-draggable="true" data-dragtype="card-row">
-          <div class="card-row-sort-widget">
+        <div class="card-row" data-draggable="true" data-dragtype="card-row" data-datatype="author_name">
+          <div class="card-row-sort-widget" data-draghandle="true">
             <div class="icon icon-4x sort-widget-icon"></div>
           </div>
           <div class="card-row-title">Author's name</div>
+          <button class="hide-in-practice-mode">
+            <div class="icon icon-3x zen-icon"></div>
+          </button>
         </div>
       </div>
       <div class="card-side card-side-b" data-dragtarget="true" data-dragaccept="card-row">
         <div class="card-side-label tooltip" data-tooltiptitle="This side contains the answers.">B</div>        
-        <div class="card-row" data-draggable="true" data-dragtype="card-row">
-          <div class="card-row-sort-widget">
+        <div class="card-row" data-draggable="true" data-dragtype="card-row" data-datatype="country">
+          <div class="card-row-sort-widget" data-draghandle="true">
             <div class="icon icon-4x sort-widget-icon"></div>
           </div>
           <div class="card-row-title">Country</div>
+          <button class="hide-in-practice-mode">
+            <div class="icon icon-3x zen-icon"></div>
+          </button>
         </div>
-        <div class="card-row" data-draggable="true" data-dragtype="card-row">
-          <div class="card-row-sort-widget">
+        <div class="card-row" data-draggable="true" data-dragtype="card-row" data-datatype="time_period">
+          <div class="card-row-sort-widget" data-draghandle="true">
             <div class="icon icon-4x sort-widget-icon"></div>
           </div>
           <div class="card-row-title">Time period</div>
+          <button class="hide-in-practice-mode">
+            <div class="icon icon-3x zen-icon"></div>
+          </button>
         </div>
-        <div class="card-row" data-draggable="true" data-dragtype="card-row">
-          <div class="card-row-sort-widget">
+        <div class="card-row" data-draggable="true" data-dragtype="card-row" data-datatype="style_movement">
+          <div class="card-row-sort-widget" data-draghandle="true">
             <div class="icon icon-4x sort-widget-icon"></div>
           </div>
           <div class="card-row-title">Style / Movement</div>
+          <button class="hide-in-practice-mode">
+            <div class="icon icon-3x zen-icon"></div>
+          </button>
         </div>
-        <div class="card-row" data-draggable="true" data-dragtype="card-row">
-          <div class="card-row-sort-widget">
+        <div class="card-row" data-draggable="true" data-dragtype="card-row" data-datatype="works">
+          <div class="card-row-sort-widget" data-draghandle="true">
             <div class="icon icon-4x sort-widget-icon"></div>
           </div>
           <div class="card-row-title">List of works</div>
+          <button class="hide-in-practice-mode">
+            <div class="icon icon-3x zen-icon"></div>
+          </button>
         </div>
-        <div class="card-row" data-draggable="true" data-dragtype="card-row">
-          <div class="card-row-sort-widget">
+        <div class="card-row" data-draggable="true" data-dragtype="card-row" data-datatype="random_work_picture">
+          <div class="card-row-sort-widget" data-draghandle="true">
             <div class="icon icon-4x sort-widget-icon"></div>
           </div>
           <div class="card-row-title">Picture of one of their works</div>
+          <button class="hide-in-practice-mode">
+            <div class="icon icon-3x zen-icon"></div>
+          </button>
         </div>
       </div>
       <div style="flex-grow: 1;"></div>

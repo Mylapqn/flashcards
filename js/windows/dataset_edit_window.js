@@ -14,44 +14,49 @@ class DatasetEditWindow extends ProgramWindow {
       this.createDataset()
     if(clicked.editIcon) {
       program.windows.set(editWindow)
-      editWindow.loadDataset(clicked.datasetCard.dataset.datasetname, clicked.datasetCard.dataset.id)
+      editWindow.loadDataset(clicked.datasetCard.dataset.datasetid, clicked.datasetCard.dataset.datasetname)
     }
     if(clicked.deleteIcon) {
-      this.deleteDataset(clicked.datasetCard.dataset.datasetname)
+      this.deleteDataset(clicked.datasetCard.dataset.datasetid, document.activeElement.dataset.datasetname)
     }
   }
   handleKeydown(e) {
     if(e.code === "KeyA")
       this.createDataset()
     if(e.code === "Backspace")
-      this.deleteDataset(document.activeElement.dataset.datasetname)
+      this.deleteDataset(document.activeElement.dataset.datasetid, document.activeElement.dataset.datasetname)
   }
   createDataset() {
-    let datasetName = window.prompt("Enter dataset name", "Marshmellows")
-    let datasetDescription = window.prompt("Enter dataset description", "They're fluffy and soft.") || ""
-    if(!datasetName)  
+    let data = {}
+    data.dataset_name = window.prompt("Enter dataset name", "Marshmellows")
+    data.dataset_description = window.prompt("Enter dataset description", "They're fluffy and soft.") || ""
+    if(!data.dataset_name)  
       return
-    Server.insertDataset(datasetName, datasetDescription)
+    Server.insertDataset(data)
+      .then((rows) => this.refreshView(rows))
   }
-  deleteDataset(datasetName) {
+  refreshView(rows) {
+    console.log('refresh')
+    Query.allOn(this.element, ".dataset-item").forEach(
+      item => item.remove())
+    rows.forEach(row => {
+      this.createDatasetHTML(row.id, row.dataset_name, row.dataset_description)
+    })
+  }
+  deleteDataset(datasetId, datasetName) {
     if(window.confirm("Delete " + datasetName + "?")) {
-      Server.deleteDataset(datasetName)
-      Query.on(this.element, `.dataset-item[data-datasetname="${datasetName}"]`)
+      Server.deleteDataset(datasetId)
+        .then((rows) => this.refreshView(rows))
+      Query.on(this.element, `.dataset-item[data-datasetid="${datasetId}"]`)
       .remove()
     }
   }
   loadDatasets() {
-    //GET data from server and update the HTML
-    Server.getDatasets(this)
+    Server.getDatasets()
+      .then((rows) => this.refreshView(rows))
   }
-  receiveData(data) {
-    console.log(data)
-    for(let key in data) 
-      if(data[key].dataset_name)
-        this.createDatasetHTML(data[key].id, data[key].dataset_name, data[key].dataset_description)
-  }
-  createDatasetHTML(id, datasetName, datasetDescription) {
-    let container   = HTML.Element("div", "dataset-item", "", [["tabindex", "0"]], [["datasetname", datasetName], ["id", id]])
+  createDatasetHTML(datasetId, datasetName, datasetDescription) {
+    let container   = HTML.Element("div", "dataset-item", "", [["tabindex", "0"]], [["datasetname", datasetName], ["datasetid", datasetId]])
     let buttons     = HTML.Element("div", "buttons")
     let description = HTML.Element("div", "dataset-description", datasetDescription)
     let header      = HTML.Element("div", "dataset-header")

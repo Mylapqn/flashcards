@@ -7,6 +7,12 @@ class DialogWindow {
       "dragging-self"
     )
   }
+  show() {
+    this.element.classList.remove("hidden")
+  }
+  hide() {
+    this.element.classList.add("hidden")
+  }
   handleInput(e) {
     if(this["handle" + e.type.capitalize()])
       this["handle" + e.type.capitalize()](e)

@@ -15,8 +15,8 @@
   --color-dark2: hsl(240, 3%, 14%);
   --color-dark3: hsl(240, 3%, 17%);
   --color-dark4: hsl(240, 3%, 20%);
-  --color-dark5: hsl(240, 4%, 26%);
-  --color-dark6: hsl(240, 5%, 35%);
+  --color-dark5: hsl(240, 4%, 24%);
+  --color-dark6: hsl(240, 5%, 30%);
   --color-light0: hsl(234, 12%, 84%);
   --color-light1: hsl(235, 10%, 75%);
   --color-light2: hsl(235, 6%, 64%);
@@ -107,6 +107,7 @@ input:focus {
 
 .zen-hide {
   filter: opacity(0.1) grayscale();
+  transition: all 0.08s ease-in-out;
 }
 .zen-hide:hover {
   filter: opacity(1.0) grayscale();
@@ -262,13 +263,13 @@ button.mode {
   font-family: "roboto";
   font-size: 1rem;
   font-weight: 600;
-  background-color: var(--color-dark2);
+  background-color: var(--color-dark3);
   padding: calc(var(--unit) * 2) calc(var(--unit) * 3);
   border-radius: var(--unit);
 }
 
 button.mode:hover {
-  background-color: var(--color-dark3);
+  background-color: var(--color-dark4);
 }
 
 button.mode.practice {
@@ -299,7 +300,10 @@ button.mode.practice:hover {
   width: calc(var(--unit) * 50);
   height: 100%;
   padding:
-    calc(var(--unit) * 4) calc(var(--unit) * 4) calc(var(--unit) * 4) calc(var(--unit) * 6);
+    calc(var(--unit) * 4) 
+    calc(var(--unit) * 4) 
+    calc(var(--unit) * 4) 
+    calc(var(--unit) * 4);
   background-color: var(--color-dark2);
 }
 
@@ -312,6 +316,12 @@ button.mode.practice:hover {
   justify-content: center;
   align-items: center;
   gap: calc(var(--unit) * 2);
+}
+
+#top-level-back-button {
+  position: relative;
+  left: 0;
+  top: 0;
 }
 
 .back-button {
@@ -341,6 +351,14 @@ button.mode.practice:hover {
   width: 100%;
 }
 
+button.select-all-text {
+  background-color: var(--color-dark3);
+  border-radius: var(--unit);
+
+}
+button.select-all-text:hover {
+  background-color: var(--color-dark4);
+}
 .background-fill {
   width: 100%;
   height: 100%;
@@ -510,12 +528,23 @@ button.fill-with-previous:hover {
 .dataset-item,
 .add-dataset-button {
   position: relative;
-  background-color: var(--color-dark2);
+  background-color: var(--color-dark3);
   padding: calc(var(--unit) * 2);
   border-radius: var(--unit);
   max-width: 300px;
   width: 300px;
   cursor: pointer;
+}
+
+.add-dataset-button {
+  background-color: var(--color-dark2);
+}
+
+.dataset-item:hover {
+  background-color: var(--color-dark4);
+}
+.add-dataset-button:hover {
+  background-color: var(--color-dark3);
 }
 
 .add-dataset-button {
@@ -551,16 +580,13 @@ button.fill-with-previous:hover {
   right: calc(var(--unit) * 2);
 }
 
-.dataset-item:hover,
-.add-dataset-button:hover {
-  background-color: var(--color-dark3);
-}
 
 .item-list {
   display: flex;
   flex-direction: column;
   gap: calc(var(--unit) * 2);
   border-radius: var(--unit);
+  overflow-y: auto;
 }
 
 .item-list-header {
@@ -580,13 +606,18 @@ button.fill-with-previous:hover {
   flex-direction: column;
   gap: var(--unit);
   background-color: var(--color-dark3);
-  padding: calc(var(--unit) * 2);
+  padding: calc(var(--unit) * 2) calc(var(--unit) * 2) calc(var(--unit) * 2) calc(var(--unit) * 6);
   cursor: pointer;
   border-radius: var(--unit);
 }
 
 .item.active {
-  outline: 2px solid var(--color-accent3);
+  /* outline: 2px solid var(--color-accent3); */
+  background-color: var(--color-accent3);
+}
+.item.active:hover {
+  /* outline: 2px solid var(--color-accent3); */
+  background-color: var(--color-accent4);
 }
 
 .item-header {
@@ -681,6 +712,12 @@ button.fill-with-previous:hover {
   z-index: 1;
 }
 
+button.select-dataset-button {
+  background-color: var(--color-accent3);
+  padding: var(--unit);
+  border-radius: var(--unit);
+}
+
 button.give-hint,
 button.fail-button,
 button.pass-button {
@@ -755,8 +792,9 @@ button.pass-button:hover {
   position: absolute;
   border-radius: 50%;
   inset: 0;
-  background: conic-gradient(var(--color) calc(var(--percent)*1%),
-      var(--color-dark0) 0);
+  background: conic-gradient(
+    var(--color) calc(var(--percent)*1%),
+    var(--color-dark0) 0);
 }
 
 .percentage-correct {
@@ -774,9 +812,19 @@ button.pass-button:hover {
 .setup-row {
   display: flex;
   align-items: center;
-  gap: calc(var(--unit) * 4);
+  gap: calc(var(--unit) * 2);
   width: 100%;
-  height: calc(var(--unit) * 8);
+  min-height: calc(var(--unit) * 6);
+}
+
+.setup-row.vertical {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.setup-row.vertical .setup-row-content {
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .setup-row-content {
@@ -787,16 +835,28 @@ button.pass-button:hover {
   flex-grow: 1;
 }
 
+.setup-info-row {
+  display: flex;
+  gap: calc(var(--unit) * 1);
+  background-color: var(--color-dark2);
+  font-size: 0.8rem;
+  padding: calc(var(--unit) * 1);
+  border-radius: var(--unit);
+}
+
 .item-sort-widget {
   position: absolute;
-  left: calc(var(--unit) * -5);
+  left: calc(var(--unit) * 1);
   top: calc(var(--unit) * 3);
 }
 
 #practice-setup-window .main-content {
+  display: flex;
+  flex-direction: column;
   background-color: var(--color-dark3);
-  padding: calc(var(--unit) * 4);
+  padding: calc(var(--unit) * 4) calc(var(--unit) * 6);
   border-radius: calc(var(--unit) * 2);
+  gap: calc(var(--unit) * 2);
 }
 
 #practice-setup-window .bottom-buttons {
@@ -828,9 +888,12 @@ button.start-practice:hover {
   align-items: center;
   height: 100%;
   width: 100%;
+  margin: 0 calc(var(--unit) * 2);
 }
 
 .slider-label {
+  position: absolute;
+  right: calc(var(--unit) * -5);
   display: flex;
   align-items: center;
   height: 100%;
@@ -842,6 +905,11 @@ button.start-practice:hover {
   height: var(--unit);
   border-radius: var(--unit);
   background-color: var(--color-dark0);
+  transition: all 0.15s ease-in-out;
+}
+
+.slider:hover .slider-track {
+  background-color: var(--color-dark5);
 }
 
 .slider-handle-wrapper {
@@ -870,6 +938,73 @@ button.start-practice:hover {
 
 .slider-handle:hover {
   background-color: var(--color-accent4);
+}
+
+.training-preview-card {
+  display: flex;
+  flex-direction: column;
+  width: calc(var(--unit) * 12);
+  height: calc(var(--unit) * 10);
+  background-color: var(--color-dark6);
+  border-radius: calc(var(--unit) * 1);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.training-preview-card:hover .side-a {
+  background-color: var(--color-dark6);
+}
+
+.training-preview-card:hover .side-b {
+  background-color: var(--color-dark6);
+}
+
+.training-preview-card.selected {
+  outline: 4px solid var(--color-accent3);
+}
+
+
+.training-preview-card .side-a,
+.training-preview-card .side-b {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.training-preview-card .side-a {
+  background-color: var(--color-dark5);
+}
+.training-preview-card .side-b {
+  background-color: var(--color-dark5);
+}
+
+.card-divider {
+  min-height: calc(var(--unit) * 0.5);
+  width: 100%;
+  background-color: var(--color-dark4);
+}
+
+.training-cards-container {
+  display: flex;
+  gap: calc(var(--unit) * 2);
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+button.set-custom-training-method {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--unit) * 1);
+  background-color: var(--color-dark4);
+  padding: calc(var(--unit) * 1) calc(var(--unit) * 2);
+  color: var(--color-secondary0);
+  border-radius: var(--unit);
+}
+
+button.set-custom-training-method:hover {
+  background-color: var(--color-dark5);
 }
 
 .card-side {
@@ -930,6 +1065,9 @@ button.start-practice:hover {
   height: calc(var(--unit) * 4);
   padding: calc(var(--unit) * 1);
   border-radius: var(--unit);
+}
+
+*[data-draghandle="true"] {
   cursor: grabbing;
 }
 
@@ -952,6 +1090,14 @@ button.start-practice:hover {
 .card-row-sort-widget {
   position: absolute;
   left: calc(var(--unit) * -5);
+}
+
+.card-row-title {
+  flex-grow: 1;
+}
+
+button.hide-in-practice-mode {
+  background-color: transparent;
 }
 
 button.confirm-training-method,

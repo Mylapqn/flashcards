@@ -11,10 +11,11 @@ class State {
     if(val) {
       this.previous = this.current
       this.current = val
-      console.log(val)
+      return true
     }
     else {
       console.log('invalid value')
+      return false
     }
   }
   revert() {

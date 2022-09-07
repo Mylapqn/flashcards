@@ -19,5 +19,9 @@ class ProgramWindow {
   }
   addDialogWindow(win) {
     this.dialogWindows.push(win)
+    win.window = this
+  }
+  getDialogData(data) {
+    throw "getDialogData not properly implemented."
   }
 }

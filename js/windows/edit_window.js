@@ -4,10 +4,13 @@ class EditWindow extends ProgramWindow {
     this.elements = {
       datasetLabel: Query.first("#editor-current-dataset-text-label")
     }
-    this.selectedAuthor = null
-    this.dataset =        null
+    this.selectedAuthorId = null
     this.datasetId =      null
     this.datasetName =    null
+    this.mode = new State(
+      "add",
+      "edit",
+    )
   }
   handleClick(e) {
     let clicked = {
@@ -16,17 +19,20 @@ class EditWindow extends ProgramWindow {
       item: e.target.closest(".item"),
       deleteItemBtn: e.target.closest(".item .delete-icon"),
       fillPreviousBtn: e.target.closest("button.fill-with-previous"),
+      selectAllTextBtn: e.target.closest("button.select-all-text"),
     }
     if(clicked.addWorkBtn)
       this.createWorkHTML()
     if(clicked.item)
-      this.selectAuthor(clicked.item.dataset.author, clicked.item)
+      this.selectAuthor(clicked.item.dataset.id, clicked.item)
     if(clicked.addItemBtn)
       this.createAuthor()
     if(clicked.deleteItemBtn) 
       this.deleteAuthor(clicked.item.dataset.author)
     if(clicked.fillPreviousBtn)
       this.fillPreviousValue(clicked.fillPreviousBtn)
+    if(clicked.selectAllTextBtn)
+      clicked.selectAllTextBtn.closest(".input-field").querySelector("input[type='text']").select()
   }
   handleKeydown(e) {
     let focused = document.activeElement
@@ -35,44 +41,42 @@ class EditWindow extends ProgramWindow {
     if(e.code === "KeyA") 
       this.createWork()
   }
-  loadDataset(datasetName, id) {
+  loadDataset(datasetId, datasetName) {
+    console.log(datasetId)
+    this.datasetId = +datasetId
     this.datasetName = datasetName
-    this.datasetId = +id
-    Server.getDatasetData(datasetName, this)
-    // this.elements.datasetLabel.innerText = datasetName
-    // this.dataset = data[datasetName]
-    // for(let author of this.dataset)
-    //   this.createAuthorItem(author)
-    // console.warn("use refreshView with database data", this.refreshView)
+    Server.getDatasetData(this.datasetId)
+      .then((rows) => {
+        this.refreshData(rows)
+      })
   }
-  receiveData(rows) {
-    rows.forEach(row => {
-      this.createAuthorHTML(row)
-    })
-  }
-  refreshView(databaseData) {
-
+  refreshData(rows) {
+    this.dataset = rows
+    Query.allOn(this.element, ".item").forEach(item => item.remove())
+    rows.forEach(row => this.createAuthorHTML(row))
   }
   createAuthor() {
     console.log("create author");
-    let formData = new FormData()
+    let data = {}
     Query.allOn(this.element, "#edit-form input[type='text']").forEach(input => {
-      formData.append(input.name, input.value)
+      data[input.name] = input.value
     })
-    formData.append("dataset_id", this.datasetId)
-    Server.insertAuthor(formData)
+    data["dataset_id"] = this.datasetId
+    this.parseInputData(data)
+    Server.insertAuthor(data)
+      .then((rows) => this.refreshData(rows))
     this.updatePreviousValues()
     this.clearInputs()
   }
   createAuthorHTML(author) {
     console.log("created author item for", author.author_name)
-    let item =        HTML.Element("div", "item", null, null, [["author", author.author_name], /* ["draggable", "true"], ["dragtype", "item"] */])
-    let widgetSort =  HTML.Element("div", "item-sort-widget")
-    let iconSort =    HTML.Element("div", "icon icon-4x sort-widget-icon")
-    let iconDelete=   HTML.Element("div", "icon icon-3x delete-icon")
-    let header =      HTML.Element("div", "item-header")
-    let title =       HTML.Element("div", "item-title", author.author_name)
-    let workTitles =  HTML.Element("div", "item-works-titles secondary-text", "!!!temporary text!!!")
+    let item            = HTML.Element("div", "item", null, null, [["author", author.author_name], ["id", author.id]])
+    let widgetSort      = HTML.Element("div", "item-sort-widget")
+    let iconSort        = HTML.Element("div", "icon icon-4x sort-widget-icon")
+    let iconDelete      = HTML.Element("div", "icon icon-3x delete-icon")
+    let header          = HTML.Element("div", "item-header")
+    let title          = HTML.Element("div", "item-title", author.author_name)
+    let workTitles      = HTML.Element("div", "item-works-titles secondary-text", author.country)
     // let workTitles =  HTML.Element("div", "item-works-titles secondary-text", author.works.map(w => w.title).join(" | "))
     widgetSort.append(iconSort)
     header.append(title, iconDelete)
@@ -80,32 +84,22 @@ class EditWindow extends ProgramWindow {
     Query.on(this.element, ".item-list")
          .append(item)
   }
-  selectAuthor(authorName, element) {
-    // this.selectedAuthor = this.dataset.find(author => author.author_name === authorName)
-    // Query.allOn(this.element, ".item")
-    //      .forEach(
-    //         item => 
-    //         item.classList.remove("active")
-    //      )
-    // element.classList.add("active")
-    // console.log(this.selectedAuthor)
+  selectAuthor(authorId, element) {
+    this.selectedAuthorId = +authorId
+    Query.allOn(this.element, ".item.active").forEach(item => item.classList.remove("active"))
+    element.classList.add("active")
+    this.setMode("edit")
   }
   deleteAuthor(authorName) {
-    // let author = this.dataset.find(author => author.name === authorName)
-    // this.dataset.remove(author)
-    // Query.on(this.element, 
-    //   `.item[data-author="${authorName}"]`)
-    //   .remove()
-  }
-  deleteAuthorItem(authorName) {
-
+    if(window.confirm("Erase " + authorName + " from history books?"))
+      Server.deleteAuthor(authorName, this.datasetId)
+        .then((rows) => this.refreshData(rows))
   }
   createWork() {
-    console.warn("createWork() not finished")
-    let params = ["Work1", "Description", this.selectedAuthor.name]
-    this.selectedAuthor.works.push(
-      new Work(...params))
-    this.createWorkHTML(...params)
+    // let params = ["Work1", "Description", this.selectedAuthor.name]
+    // this.selectedAuthor.works.push(
+    //   new Work(...params))
+    // this.createWorkHTML(...params)
   }
   createWorkHTML(workTitle, workDescription, authorName) {
     let item =          HTML.Element("div", "work")
@@ -123,14 +117,33 @@ class EditWindow extends ProgramWindow {
     title.append(input, iconDelete)
     item.append(title, button)
     fileInput.onchange = () => {
-      let author = this.selectedAuthor || Query.on(this.element, `input[name='author_name']`).value
-      Server.sendFile(fileInput.files[0], )
+      throw "unfinished"
+      // let author = this.selectedAuthorId || Query.on(this.element, `input[name='author_name']`).value
+      // Server.sendFile(fileInput.files[0], )
     }
     Query.on(this.element, ".works").append(item)
     return item
   }
   deleteWork(work) {
-
+    throw "unfinished"
+  }
+  setMode(mode) {
+    if(!this.mode.set(mode)) 
+      return
+    let author = this.dataset.find(author => author.id === this.selectedAuthorId)
+    if(this.mode.is("add")) {
+      Query.on(this.element, ".main-heading h1").innerText = "Add new item"
+      Query.on(this.element, "button.add-item-button").innerText = "Add item"
+    }
+    if(this.mode.is("edit")) {
+      Query.on(this.element, ".main-heading h1").innerText = `Edit item: ${author.author_name}`
+      Query.on(this.element, "button.add-item-button").innerText = "Edit item"
+      Query
+      .allOn(this.element, "input[type='text']")
+      .forEach(input => {
+        input.value = author[input.name]
+      })
+    }
   }
   fillPreviousValue(button) {
     let previousValue = Query.on(this.element, `.previous-value[data-forinput='${button.dataset.forinput}']`).innerText
@@ -153,9 +166,36 @@ class EditWindow extends ProgramWindow {
     })
   }
   //#region parse input
-  parseAuthorName(input) {
+  parseInputData(data) {
+    console.log("before", data)
+    for(let key in data) {
+      data[key] = this["parse_" + key](data[key])
+    }
+    console.log("after", data)
+  }
+  parse_author_name(input) {
     let output = input.capitalizeEach()
     return output
+  }
+  parse_country(input) {
+    let output = input
+    return output      
+  }
+  parse_time_period(input) {
+    let output = input
+    return output    
+  }
+  parse_style_movement(input) {
+    let output = input
+    return output    
+  }
+  parse_note(input) {
+    let output = input
+    return output    
+  }
+  parse_dataset_id(input) {
+    let output = input
+    return output    
   }
   //#endregion
 }

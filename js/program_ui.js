@@ -17,9 +17,11 @@ class ProgramUI {
   }
   handleMousedown(e) {
     let clicked = {
-      draggable: e.target.closest("*[data-draggable='true'")
+      draggable: e.target.closest("*[data-draggable='true'"),
+      dragHandle: e.target.closest("*[data-draghandle='true']"),
+    
     }
-    if(clicked.draggable)
+    if(clicked.draggable && clicked.dragHandle)
       this.dragBegin(clicked.draggable)
   }
   handleMousemove(e) {
@@ -32,6 +34,7 @@ class ProgramUI {
       this.dragEnd(e)
   }
   updateTooltip(e) {
+    if(this.state.is("dragging-element", "sorting-element")) return
     let tooltip = e.target.closest(".tooltip")
     if(!tooltip) {
       this.hideTooltip()
@@ -61,6 +64,8 @@ class ProgramUI {
     element.style.top = mouse.client.y + "px"
     document.body.append(element)
     this.draggedElement = element
+    this.draggedElement.style.backgroundColor = "var(--color-dark2)"
+    this.draggedElement.style.width = this.draggedCopy.offsetWidth + "px"
     Query.all(
     `*[data-dragaccept='${this.draggedElement.dataset.dragtype}'`)
     .forEach(element => {

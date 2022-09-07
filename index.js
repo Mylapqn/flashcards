@@ -12,7 +12,20 @@ const path = require("path")
 const formidable = require("formidable")
 const { StringDecoder } = require("string_decoder")
 const multer = require("multer")
+const { rejects } = require("assert")
+const { response } = require("express")
 
+let connection = mysql.createConnection({
+  host: "localhost",
+  user: "user",
+  password: "prXb@ayj!66@i!Ak",
+})
+connection.query("USE flashcards", function(error, rows, fields) {
+  if(error)
+    console.log(error)
+  else 
+    console.log("Database connection successful")
+})
 
 let port = 5501
 let app = express()
@@ -21,7 +34,6 @@ app.listen(port)
 app.use(
   cors({
     origin: "*",
-    methods: ["GET", "POST"],
   })
 )
 /* {
@@ -35,33 +47,7 @@ app.use(
   app.use(morgan('dev'));
 } */
 
-
-app.get("/get-dataset-data", (request, response) => {
-  let form = formidable({})
-  let datasetName = 0
-  form.parse(request, function (error, fields, files) {
-    if(error) {
-      console.log("form parsing error:", error.message)
-    }
-    datasetName = fields.datasetName
-  })
-  connection.query("SELECT * FROM authors", function(error, rows, fields) {
-    if(error)
-      console.log(error)
-    else 
-      response.send(JSON.stringify(rows))
-  })
-})
-
 app.get("/get-datasets", (request, response) => {
-  let form = formidable({})
-  let datasetName = 0
-  form.parse(request, function (error, fields, files) {
-    if(error) {
-      console.log("form parsing error:", error.message)
-    }
-    datasetName = fields.datasetName
-  })
   connection.query("SELECT * FROM datasets", function(error, rows, fields) {
     if(error)
       console.log(error)
@@ -69,28 +55,87 @@ app.get("/get-datasets", (request, response) => {
       response.send(JSON.stringify(rows))
   })
 })
-
-app.post("/add-author", (request, response) => {
-  let form = formidable({})
-  form.parse(request, function (error, fields, files) {
-    if(error) {
-      console.log(error.message)
-      return
+app.post("/get-dataset-data", async (request, response) => {
+  let [fields, files] = await Parser.parseForm(request)
+  Parser.escapeQuotes(fields)
+  let id = +fields.dataset_id
+  console.log(id)
+  connection.query(
+    `SELECT * FROM authors WHERE dataset_id = ?`, 
+    [id], 
+    function(error, rows, fields) {
+      if(error)
+        console.log(error)
+      else {
+        console.log("Success: Selected rows for dataset with id: " + id)
+        response.send(JSON.stringify(rows))
+      }
     }
-    console.log("form fields: ", fields);
-    connection.query(
-    ` INSERT INTO authors (author_name, country, style_movement, time_period, note, dataset_id) 
-      VALUES ('${fields.author_name}', '${fields.country}', '${fields.style_movement}', '${fields.time_period}', '${fields.note}', '${fields.dataset_id}')
-    `,
+  )
+})
+
+app.post("/insert-author", async (request, response) => {
+  let [fields, files] = await Parser.parseForm(request)
+  Parser.escapeQuotes(fields)
+  connection.query(
+  ` INSERT INTO authors (author_name, country, style_movement, time_period, note, dataset_id) 
+    VALUES (?, ?, ?, ?, ?, ?)
+  `,
+  [fields.author_name, fields.country, fields.style_movement, fields.time_period, fields.note, fields.dataset_id]
+  ,
+  function(error, rows, fields) {
+    if(error)
+      console.log("Query error: ", error.message)
+    else 
+      {
+        console.log("Success: Author added.")
+        response.writeHead(200, "OK")
+        response.send()
+      }
+  })
+})
+
+app.post("/delete-author", async (request, response) => {
+  let [fields, files] = await Parser.parseForm(request)
+  Parser.escapeQuotes(fields)
+  connection.query(
+    `DELETE FROM authors WHERE author_name = ?`,
+    [fields.author_name],
     function(error, rows, fields) {
       if(error)
         console.log("Query error: ", error.message)
-      else 
-        console.log("Query successful")
-    })
-  })
+      else {
+        console.log("Success: Author deleted.")
+        response.writeHead(200, "OK")
+        response.send()
+      }
+    }
+  )
 })
+
+app.post("/update-author", async (request, response) => {
+  let [fields, files] = await Parser.parseForm(request)
+  Parser.escapeQuotes(fields)
+  connection.query(
+    ` UPDATE authors SET author_name = ?, country = ?, style_movement = ?, time_period = ?, note = ?, dataset_id = ?
+      WHERE id = ?
+    `,
+    [fields.author_name, fields.country, fields.style_movement, fields.time_period, fields.note, fields.dataset_id, fields.id]
+    ,
+    function(error, rows, fields) {
+      if(error)
+        console.log("Query error: ", error.message)
+      else {
+        console.log("Success: Author deleted.")
+        response.writeHead(200, "OK")
+        response.send()
+      }
+    }
+  )
+})
+
 app.post("/add-file", (request, response) => {
+  //kurva špatný sračky
   try {
     if(!request.files) {
       response.send({
@@ -119,49 +164,68 @@ app.post("/add-file", (request, response) => {
     response.end("End of message.")
   }
   catch (error) {
-    // console.log(error.message)
+    console.log(error.message)
     response.status(500).send(error);
   }
 })
 
-app.post("/add-dataset", (request, response) => {
-  let form = formidable({})
-  form.parse(request, function (error, fields, files) {
-    if(error) {
-      console.log(error.message)
-      return
-    }
-    console.log("form fields: ", fields);
-    //escape quotes
-    let description = fields.dataset_description.replaceAll("'", "''").replaceAll('"', '""')
-    let dataset_name = fields.dataset_name.replaceAll("'", "''").replaceAll('"', '""')
+app.post("/insert-dataset", async (request, response) => {
+  let [fields, files] = await Parser.parseForm(request)
+  Parser.escapeQuotes(fields)
+  console.log(fields)
     connection.query(
-    ` INSERT INTO datasets (dataset_name, dataset_description) 
-      VALUES ('${dataset_name}','${description}')
+  ` INSERT INTO datasets (dataset_name, dataset_description) 
+    VALUES (?, ?)
+  `,
+  [fields.dataset_name, fields.dataset_description],
+  function(error, rows, fields) {
+    if(error)
+      console.log("Query error: ", error.message)
+    else {
+      console.log("Success: Added dataset.")
+      response.writeHead(200, "OK")
+      response.send()
+    }
+  })
+})
+app.post("/delete-dataset", async (request, response) => {
+  let [fields, files] = await Parser.parseForm(request)
+  Parser.escapeQuotes(fields)
+  let id = +fields.dataset_id
+  console.log("dataset id: ", id)
+  connection.query(
+    ` DELETE FROM datasets WHERE id = ?
     `,
+    [id],
     function(error, rows, fields) {
       if(error)
         console.log("Query error: ", error.message)
-      else 
-        console.log("Query successful")
+      else {
+        console.log("Success: Dataset deleted.")
+        response.writeHead(200, "OK")
+        response.send()
+      }
+    }
+  )
+})
+
+class Parser {
+  static async parseForm(request) {
+    let form = formidable({})
+    let formData = await new Promise((resolve, reject) => {
+      form.parse(request, function (error, fields, files) {
+        if(error) {
+          reject(error)
+          return
+        }
+        resolve({fields: fields, files: files})
+      })
     })
-  })
-})
-
-let connection = mysql.createConnection({
-  host: "localhost",
-  user: "user",
-  password: "prXb@ayj!66@i!Ak",
-})
-connection.query("USE flashcards", function(error, rows, fields) {
-  if(error)
-    console.log(error)
-  else 
-    console.log("Database connection successful")
-})
-
-class DB {
-  static getDataset(index) {
-
+    return [formData.fields, formData.files]
+  }
+  static escapeQuotes(fields) {
+    for(let field in fields) 
+      if(typeof fields[field] === "string")
+        fields[field] = fields[field].replaceAll("'", "''").replaceAll('"', '""')
   }
 }

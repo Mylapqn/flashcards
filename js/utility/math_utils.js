@@ -18,6 +18,11 @@ class MathUtils {
   static median(...numbers) {
     return numbers[Math.floor(numbers.length / 2)]
   }
+  static step(number, factor) {
+    let num = number / factor
+    num = Math.floor(num)
+    return num * factor
+  }
 }
 
 function stringToBool(string) {

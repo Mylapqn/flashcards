@@ -1,15 +1,41 @@
 class Server {
-  static insertAuthor(formData) {
-    console.log("Request to 5501")
-    let xhr = new XMLHttpRequest()
-    xhr.open("POST", "http://127.0.0.1:5501/add-author", true)
-    xhr.send(formData)
+
+  static createFormData(object) {
+    let formData = new FormData()
+    for(let key in object)
+      formData.append(key, object[key])
+    return formData
   }
-  static alterAuthor(formData) {
-    console.log("Request to 5501")
-    let xhr = new XMLHttpRequest()
-    xhr.open("POST", "http://127.0.0.1:5501/add-author", true)
-    xhr.send(formData)
+  static async insertAuthor(data) {
+    let formData = this.createFormData(data)
+    const response = await fetch("http://127.0.0.1:5501/insert-author", {
+      method: "POST",
+      mode: "cors",
+      body: formData
+    })
+    let rows = await this.getDatasetData(data.dataset_id)
+    return rows
+  }
+  static async updateAuthor(data) {
+    throw "not fully implemented"
+    let formData = this.createFormData(data)
+    const response = await fetch("http://127.0.0.1:5501/update-author", {
+      method: "POST",
+      mode: "cors",
+      body: formData
+    })
+    let rows = await this.getDatasetData(data.dataset_id)
+    return rows
+  }
+  static async deleteAuthor(author_name, dataset_id) {
+    let formData = this.createFormData({author_name: author_name})
+    const response = await fetch("http://127.0.0.1:5501/delete-author", {
+      method: "POST",
+      mode: "cors",
+      body: formData
+    })
+    let rows = await this.getDatasetData(dataset_id)
+    return rows
   }
   static sendFile(file, author) {
     console.log("Request to 5501")
@@ -19,71 +45,53 @@ class Server {
     let xhr = new XMLHttpRequest()
     xhr.open("POST", "http://127.0.0.1:5501/add-file", true)
     xhr.send(formData)
-    xhr.onreadystatechange = (event) => {
-      console.log(event)
-    }
   }
-  static getDatasetData(datasetName, returnTo) {
-    let xhr = new XMLHttpRequest()
-    xhr.open("GET", "http://127.0.0.1:5501/get-dataset-data", true)
-    xhr.setRequestHeader("Content-Type", "application/json")
-    xhr.send(
-      JSON.stringify(
-        {datasetName: datasetName}
-      )
-    )
-    xhr.onreadystatechange = (event) => {
-      if (xhr.readyState === XMLHttpRequest.DONE) {
-        const status = xhr.status;
-        if (status === 0 || (status >= 200 && status < 400)) {
-          // The request has been completed successfully
-          console.log(JSON.parse(xhr.responseText));
-          returnTo.receiveData(JSON.parse(xhr.responseText))
-        } else {
-          console.log("Error with request.")
-        }
-      }
-    }
+  static async getDatasetData(datasetId) {
+    const response = await fetch("http://127.0.0.1:5501/get-dataset-data", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        dataset_id: datasetId
+      })
+    })
+    return response.json()
   }
-  static getDatasets(returnTo) {
-    let xhr = new XMLHttpRequest()
-    xhr.open("GET", "http://127.0.0.1:5501/get-datasets", true)
-    xhr.setRequestHeader("Content-Type", "application/json")
-    xhr.send()
-    xhr.onreadystatechange = (event) => {
-      if (xhr.readyState === XMLHttpRequest.DONE) {
-        const status = xhr.status;
-        if (status === 0 || (status >= 200 && status < 400)) {
-          // The request has been completed successfully
-          console.log(JSON.parse(xhr.responseText));
-          returnTo.receiveData(JSON.parse(xhr.responseText))
-        } else {
-          console.log("Error with request.")
-        }
-      }
-    }
+  static async getDatasets() {
+    const response = await fetch("http://127.0.0.1:5501/get-datasets", {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+    return response.json()
   }
-  static insertDataset(datasetName, datasetDescription) {
-    let formData = new FormData()
-    formData.append("dataset_name", datasetName)
-    formData.append("dataset_description", datasetDescription)
-    console.log("Request to 5501")
-    let xhr = new XMLHttpRequest()
-    xhr.open("POST", "http://127.0.0.1:5501/add-dataset", true)
-    xhr.send(formData)
-    xhr.onreadystatechange = (event) => {
-      if (xhr.readyState === XMLHttpRequest.DONE) {
-        const status = xhr.status;
-        if (status === 0 || (status >= 200 && status < 400)) {
-          // The request has been completed successfully
-          console.log(JSON.parse(xhr.responseText));
-        } else {
-          console.log("Error with request.")
-        }
-      }
-    }
+  static async insertDataset(data) {
+    console.log(data)
+    let formData = this.createFormData(data)
+    const response = await fetch("http://127.0.0.1:5501/insert-dataset", {
+      method: "POST",
+      mode: "cors",
+      body: formData
+    })
+    let rows = await this.getDatasets()
+    return rows
   }
-  static deleteDataset(datasetName) {
-
+  static async deleteDataset(datasetId) {
+    const response = await fetch("http://127.0.0.1:5501/delete-dataset", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        dataset_id: datasetId
+      })
+    })
+    let rows = await this.getDatasets()
+    return rows
   }
 }

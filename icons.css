@@ -10,6 +10,10 @@
   background-color: rgba(255, 255, 255, 0.08);
 }
 
+.icon-no-hover {
+  background-color: transparent!important;
+}
+
 .icon-2x {
   width: calc(var(--unit) * 2);
   height: calc(var(--unit) * 2);
@@ -57,4 +61,7 @@
 
 .fill-with-previous-icon {
   background-image: url(/images/ui/icons/fill_with_previous.png);
+}
+.info-icon {
+  background-image: url(/images/ui/icons/info.png);
 }

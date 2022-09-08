@@ -12,6 +12,7 @@ class EditWindow extends ProgramWindow {
       "edit",
     )
   }
+  //#region input
   handleClick(e) {
     let clicked = {
       addWorkBtn: e.target.closest(".add-work-button"),
@@ -41,6 +42,7 @@ class EditWindow extends ProgramWindow {
     if(e.code === "KeyA") 
       this.createWork()
   }
+  //#endregion
   loadDataset(datasetId, datasetName) {
     console.log(datasetId)
     this.datasetId = +datasetId
@@ -174,15 +176,41 @@ class EditWindow extends ProgramWindow {
     console.log("after", data)
   }
   parse_author_name(input) {
-    let output = input.capitalizeEach()
+    let 
+    output = input.toLocaleLowerCase()
+    output = output.capitalizeEach()
+    output = output.filterUnwantedChars("◘•○#-–—")
     return output
   }
   parse_country(input) {
-    let output = input
+    let output = input.capitalizeEnglishCountryName()
     return output      
   }
   parse_time_period(input) {
-    let output = input
+    let output = input.toLocaleLowerCase()
+    let number = +output.replace(/[^0-9\.]+/g, '')
+    //století range
+    if(output.includes("-") || output.includes("–") || output.includes("—")) {
+      let chars = "-–—"
+      let words = []
+      for(let char of chars) {
+        words = output.split(char)
+        if(words.length > 1) break
+      }
+      let count = 0
+      words.forEach(w => {
+        if(w === "") return
+        let num = +w.replace(/[^0-9\.]+/g, '')
+        if(num > 1 || num <= 1)
+          count++
+      })
+      console.log(count, words[0], words[1])
+      if(count > 1 && (words[0] <= 21 && words[1] <= 21))
+        return words[0] + " - " + words[1] + ". století"
+    }
+    if(number <= 21)
+      return number + ". století"
+    output = output.replaceAll("–", "-").replaceAll("—", "-")
     return output    
   }
   parse_style_movement(input) {

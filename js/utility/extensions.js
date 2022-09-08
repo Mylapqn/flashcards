@@ -7,6 +7,21 @@ String.prototype.capitalizeEach = function() {
   words = words.map(w => w.charAt(0).toLocaleUpperCase() + w.slice(1))
   return words.join(" ")
 }
+String.prototype.capitalizeEnglishCountryName = function() {
+  let words = this.toLocaleLowerCase().split(" ")
+  words = words.map((w, index) => {
+      if((w == "of" || w == "and" || w == "in" || w == "a" || w == "the") && index !== 0)
+        return w
+      return w.charAt(0).toLocaleUpperCase() + w.slice(1)
+  })
+  return words.join(" ")
+}
+String.prototype.filterUnwantedChars = function (chars) {
+  let output = this
+  for(let char of chars)
+    output = output.replaceAll(char, "")
+  return output
+}
 String.prototype.reverse = function() {
   let array = this.split('')
   let string = array.reverse().join('')

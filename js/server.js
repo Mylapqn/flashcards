@@ -1,5 +1,4 @@
 class Server {
-
   static createFormData(object) {
     let formData = new FormData()
     for(let key in object)
@@ -38,13 +37,13 @@ class Server {
     return rows
   }
   static sendFile(file, author) {
-    console.log("Request to 5501")
-    let formData = new FormData()
-    formData.append("file", file)
-    formData.append("author_name", author)
-    let xhr = new XMLHttpRequest()
-    xhr.open("POST", "http://127.0.0.1:5501/add-file", true)
-    xhr.send(formData)
+    throw "not fully implemented"
+    // let formData = new FormData()
+    // formData.append("file", file)
+    // formData.append("author_name", author)
+    // let xhr = new XMLHttpRequest()
+    // xhr.open("POST", "http://127.0.0.1:5501/add-file", true)
+    // xhr.send(formData)
   }
   static async getDatasetData(datasetId) {
     const response = await fetch("http://127.0.0.1:5501/get-dataset-data", {

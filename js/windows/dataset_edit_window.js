@@ -19,6 +19,32 @@ class DatasetEditWindow extends ProgramWindow {
     if(clicked.deleteIcon) {
       this.deleteDataset(clicked.datasetCard.dataset.datasetid, document.activeElement.dataset.datasetname)
     }
+    // let watched = [
+    //   {
+    //     element: e.target.closest(".add-dataset-button"),
+    //     action() {
+    //       this.createDataset()
+    //     }
+    //   },
+    //   {
+    //     element: e.target.closest(".edit-icon"),
+    //     action() {
+    //       program.windows.set(editWindow)
+    //       editWindow.loadDataset(clicked.datasetCard.dataset.datasetid, clicked.datasetCard.dataset.datasetname)
+    //     }
+    //   },
+    //   {
+    //     element: e.target.closest(".delete-icon"),
+    //     action() {
+    //       this.deleteDataset(clicked.datasetCard.dataset.datasetid, document.activeElement.dataset.datasetname)
+    //     }
+    //   },
+    // ]
+    // //experiment- get the most specific element clicked
+    // let clicked = []
+    // for(let elem in watched)
+    //   if(elem) clicked.push(elem)
+
   }
   handleKeydown(e) {
     if(e.code === "KeyA")
@@ -28,8 +54,8 @@ class DatasetEditWindow extends ProgramWindow {
   }
   createDataset() {
     let data = {}
-    data.dataset_name = window.prompt("Enter dataset name", "Marshmellows")
-    data.dataset_description = window.prompt("Enter dataset description", "They're fluffy and soft.") || ""
+    data.dataset_name = window.prompt("Enter dataset name", "Bob")
+    data.dataset_description = window.prompt("Enter dataset description", "Very cute and handsome.") || ""
     if(!data.dataset_name)  
       return
     Server.insertDataset(data)

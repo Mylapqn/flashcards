@@ -74,9 +74,47 @@ app.post("/get-dataset-data", async (request, response) => {
   )
 })
 
+app.post("/insert-dataset", async (request, response) => {
+  let [fields, files] = await Parser.parseForm(request)
+  console.log(fields)
+    connection.query(
+  ` INSERT INTO datasets (dataset_name, dataset_description) 
+    VALUES (?, ?)
+  `,
+  [fields.dataset_name, fields.dataset_description],
+  function(error, rows, fields) {
+    if(error)
+      console.log("Query error: ", error.message)
+    else {
+      console.log("Success: Added dataset.")
+      response.writeHead(200, "OK")
+      response.send()
+    }
+  })
+})
+
+app.post("/delete-dataset", async (request, response) => {
+  let [fields, files] = await Parser.parseForm(request)
+  let id = +fields.dataset_id
+  console.log("dataset id: ", id)
+  connection.query(
+    ` DELETE FROM datasets WHERE id = ?
+    `,
+    [id],
+    function(error, rows, fields) {
+      if(error)
+        console.log("Query error: ", error.message)
+      else {
+        console.log("Success: Dataset deleted.")
+        response.writeHead(200, "OK")
+        response.send()
+      }
+    }
+  )
+})
+
 app.post("/insert-author", async (request, response) => {
   let [fields, files] = await Parser.parseForm(request)
-  Parser.escapeQuotes(fields)
   connection.query(
   ` INSERT INTO authors (author_name, country, style_movement, time_period, note, dataset_id) 
     VALUES (?, ?, ?, ?, ?, ?)
@@ -97,7 +135,6 @@ app.post("/insert-author", async (request, response) => {
 
 app.post("/delete-author", async (request, response) => {
   let [fields, files] = await Parser.parseForm(request)
-  Parser.escapeQuotes(fields)
   connection.query(
     `DELETE FROM authors WHERE author_name = ?`,
     [fields.author_name],
@@ -115,7 +152,6 @@ app.post("/delete-author", async (request, response) => {
 
 app.post("/update-author", async (request, response) => {
   let [fields, files] = await Parser.parseForm(request)
-  Parser.escapeQuotes(fields)
   connection.query(
     ` UPDATE authors SET author_name = ?, country = ?, style_movement = ?, time_period = ?, note = ?, dataset_id = ?
       WHERE id = ?
@@ -169,46 +205,6 @@ app.post("/add-file", (request, response) => {
   }
 })
 
-app.post("/insert-dataset", async (request, response) => {
-  let [fields, files] = await Parser.parseForm(request)
-  Parser.escapeQuotes(fields)
-  console.log(fields)
-    connection.query(
-  ` INSERT INTO datasets (dataset_name, dataset_description) 
-    VALUES (?, ?)
-  `,
-  [fields.dataset_name, fields.dataset_description],
-  function(error, rows, fields) {
-    if(error)
-      console.log("Query error: ", error.message)
-    else {
-      console.log("Success: Added dataset.")
-      response.writeHead(200, "OK")
-      response.send()
-    }
-  })
-})
-app.post("/delete-dataset", async (request, response) => {
-  let [fields, files] = await Parser.parseForm(request)
-  Parser.escapeQuotes(fields)
-  let id = +fields.dataset_id
-  console.log("dataset id: ", id)
-  connection.query(
-    ` DELETE FROM datasets WHERE id = ?
-    `,
-    [id],
-    function(error, rows, fields) {
-      if(error)
-        console.log("Query error: ", error.message)
-      else {
-        console.log("Success: Dataset deleted.")
-        response.writeHead(200, "OK")
-        response.send()
-      }
-    }
-  )
-})
-
 class Parser {
   static async parseForm(request) {
     let form = formidable({})
@@ -222,10 +218,5 @@ class Parser {
       })
     })
     return [formData.fields, formData.files]
-  }
-  static escapeQuotes(fields) {
-    for(let field in fields) 
-      if(typeof fields[field] === "string")
-        fields[field] = fields[field].replaceAll("'", "''").replaceAll('"', '""')
   }
 }

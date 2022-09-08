@@ -36,14 +36,13 @@ class Server {
     let rows = await this.getDatasetData(dataset_id)
     return rows
   }
-  static sendFile(file, author) {
-    throw "not fully implemented"
-    // let formData = new FormData()
-    // formData.append("file", file)
-    // formData.append("author_name", author)
-    // let xhr = new XMLHttpRequest()
-    // xhr.open("POST", "http://127.0.0.1:5501/add-file", true)
-    // xhr.send(formData)
+  static async uploadFile(file, authorId) {
+    let formData = this.createFormData({file: file, author_id: authorId})
+    const response = await fetch("http://127.0.0.1:5501/upload-file", {
+      method: "POST",
+      mode: "cors",
+      body: formData
+    })
   }
   static async getDatasetData(datasetId) {
     const response = await fetch("http://127.0.0.1:5501/get-dataset-data", {
@@ -79,6 +78,17 @@ class Server {
     let rows = await this.getDatasets()
     return rows
   }
+  static async updateDataset(data) {
+    console.log(data)
+    let formData = this.createFormData(data)
+    const response = await fetch("http://127.0.0.1:5501/update-dataset", {
+      method: "POST",
+      mode: "cors",
+      body: formData
+    })
+    let rows = await this.getDatasets()
+    return rows
+  }
   static async deleteDataset(datasetId) {
     const response = await fetch("http://127.0.0.1:5501/delete-dataset", {
       method: "POST",
@@ -92,5 +102,19 @@ class Server {
     })
     let rows = await this.getDatasets()
     return rows
+  }
+  static async countDatasetItems(datasetId) {
+    const response = await fetch("http://127.0.0.1:5501/count-dataset-items", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        dataset_id: datasetId
+      })
+    })
+    let json = await response.json()
+    return json[0]["COUNT(dataset_id)"]
   }
 }

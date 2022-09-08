@@ -119,9 +119,7 @@ class EditWindow extends ProgramWindow {
     title.append(input, iconDelete)
     item.append(title, button)
     fileInput.onchange = () => {
-      throw "unfinished"
-      // let author = this.selectedAuthorId || Query.on(this.element, `input[name='author_name']`).value
-      // Server.sendFile(fileInput.files[0], )
+      Server.uploadFile(fileInput.files[0], this.selectedAuthorId)
     }
     Query.on(this.element, ".works").append(item)
     return item

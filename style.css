@@ -191,11 +191,13 @@ button:active {
 }
 
 .chapter-wrapper {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: calc(var(--unit) * 2);
 }
 
 .chapter-container {
+  height: max-content;
   cursor: pointer;
 }
 
@@ -207,35 +209,40 @@ button:active {
 .chapter {
   position: relative;
   border-radius: var(--unit);
-  background-color: var(--color-accent3);
+  background-color: var(--color-dark2);
   width: calc(var(--unit) * 20);
-  height: calc(var(--unit) * 18);
+  padding: calc(var(--unit) * 1);
   transition: all 0.15s ease-in-out;
+  color: var(--color-light0);
   overflow: hidden;
 }
 
 .chapter-title {
-  position: absolute;
   bottom: 0;
   width: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
-  padding: calc(var(--unit) * 1);
   font-weight: 500;
-  background-color: var(--color-dark2);
-  color: var(--color-light0);
   letter-spacing: 0.04rem;
 }
-
+.chapter-text-container {
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--unit) * 1);
+  gap: calc(var(--unit) * 1);
+}
 .chapter-cover-image {
   width: 100%;
   max-width: 100%;
-  height: 100%;
+  height: calc(var(--unit) * 18);
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
+}
+
+.chapter-description {
+  font-size: 0.8rem;
 }
 
 .chapter-cover-image img {
@@ -1126,4 +1133,13 @@ button.zen-mode-button {
 }
 button.zen-mode-button:hover {
   background-color: var(--color-dark2);
+}
+
+button.edit-item-button {
+  background-color: var(--color-dark3);
+  border-radius: var(--unit);
+
+}
+button.edit-item-button:hover {
+  background-color: var(--color-dark4);
 }

@@ -62,6 +62,11 @@
 .fill-with-previous-icon {
   background-image: url(/images/ui/icons/fill_with_previous.png);
 }
+
 .info-icon {
   background-image: url(/images/ui/icons/info.png);
+}
+
+.edit-item-icon {
+  background-image: url(/images/ui/icons/edit_item.png);
 }

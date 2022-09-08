@@ -42,4 +42,13 @@ Array.prototype.remove = function(...children) {
 Array.prototype.findChild = function(child) {
   return this.find(obj => obj === child)
 }
+Array.prototype.randomSort = function() {
+  let newarr = []
+  let length = this.length
+  for(let i = 0; i < length; i++) {
+    let index = Math.round(Math.random()*(this.length - 1))
+    newarr.push(this.splice(index, 1)[0])
+  }
+  return newarr
+}
 //#endregion

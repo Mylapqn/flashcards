@@ -86,7 +86,6 @@ h1 {
 input[type="text"] {
   width: 100%;
   height: 100%;
-  background-color: inherit;
   color: inherit;
   caret-color: white;
   border-style: none;
@@ -99,6 +98,23 @@ input[type="text"] {
 
 input:focus {
   outline: 2px solid var(--color-accent3);
+}
+
+textarea {
+  width: 100%;
+  height: 100%;
+  color: inherit;
+  caret-color: white;
+  font-family: inherit;
+  background-color: var(--color-dark1);
+  outline: none;
+  padding: var(--unit);
+  border-style: none;
+  border-radius: var(--unit);
+}
+
+.note-textarea {
+  height: calc(var(--unit) * 12);
 }
 
 .hidden {
@@ -304,7 +320,7 @@ button.mode.practice:hover {
 }
 
 .item-list-panel {
-  width: calc(var(--unit) * 50);
+  min-width: calc(var(--unit) * 50);
   height: 100%;
   padding:
     calc(var(--unit) * 4) 
@@ -389,6 +405,8 @@ button.select-all-text:hover {
 
 .previous-value {
   display: flex;
+  flex-wrap: nowrap;
+  max-height: 100%;
   padding: calc(var(--unit) * 1) calc(var(--unit) * 2);
   z-index: 1;
   font-size: 0.8rem;
@@ -649,15 +667,37 @@ button.fill-with-previous:hover {
   min-height: calc(var(--unit) * 8);
   border-radius: calc(var(--unit) * 2);
   padding: calc(var(--unit) * 1);
-  gap: calc(var(--unit) * 2);
+  gap: calc(var(--unit) * 1);
 }
 
-.add-item-button {
+button.add-item-button, 
+button.edit-item-button, 
+button.cancel-edit-button {
+  border-radius: var(--unit);
+  font-weight: 500;
+  padding: calc(var(--unit) * 1) calc(var(--unit) * 2);
+  font-size: 1rem;
+}
+button.add-item-button {
   color: var(--color-light0);
   background-color: var(--color-accent3);
   border-radius: var(--unit);
   font-weight: 500;
   font-size: 1rem;
+}
+button.add-item-button:hover {
+  background-color: var(--color-accent4);
+}
+
+button.cancel-edit-button {
+  color: var(--color-secondary0);
+  background-color: var(--color-dark4);
+  border-radius: var(--unit);
+  font-weight: 500;
+  font-size: 1rem;
+}
+button.cancel-edit-button:hover {
+  background-color: var(--color-dark5);
 }
 
 .ignore-empty-fields-checkbox-wrapper {
@@ -667,8 +707,16 @@ button.fill-with-previous:hover {
   font-size: 0.8rem;
 }
 
-.card {
+.practice-card-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.practice-card {
+  position: absolute;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -677,12 +725,16 @@ button.fill-with-previous:hover {
   background-color: var(--color-dark3);
   border-radius: calc(var(--unit) * 3);
   box-shadow: 0 0 30px 0 var(--color-dark0);
-  transition: all 0.5s cubic-bezier(0.6, 0.0, 0.4, 1.0);
-  transform: perspective(2000px) rotate3d(0, 1, 0, 0deg);
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
 }
 
-.card.flipped {
-  transform: perspective(2000px) rotate3d(0, 1, 0, 180deg);
+.practice-card-row {
+  font-size: 2.0rem;
+}
+
+.practice-card:hover {
+  background-color: var(--color-dark4);
 }
 
 .card-main-heading {
@@ -864,6 +916,7 @@ button.pass-button:hover {
   padding: calc(var(--unit) * 4) calc(var(--unit) * 6);
   border-radius: calc(var(--unit) * 2);
   gap: calc(var(--unit) * 2);
+  width: 70vw;
 }
 
 #practice-setup-window .bottom-buttons {

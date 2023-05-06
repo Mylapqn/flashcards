@@ -1,8 +1,9 @@
 const express = require("express")
 const fileUpload = require("express-fileupload")
-// const busbuy = require("busboy") //breaks shit
+const fs = require("fs")
 const bodyParser = require("body-parser")
 const morgan = require("morgan")
+const multiparty = require("multiparty")
 const stringDecoder = require("string_decoder").StringDecoder
 const mysql = require("mysql2")
 const http = require("http")
@@ -19,8 +20,10 @@ const { response } = require("express")
 let connection = mysql.createConnection({
   host: "localhost",
   user: "user",
-  password: "prXb@ayj!66@i!Ak",
+  // password: "Motherfucker123456", //for the old laptop
+  password: "prXb@ayj!66@i!Ak", //for the desktop PC
 })
+
 connection.query("USE flashcards", function(error, rows, fields) {
   if(error)
     console.log(error)
@@ -145,7 +148,6 @@ app.post("/count-dataset-items", async (request, response) => {
     }
   )
 })
-
 //#endregion
 
 //#region author
@@ -171,17 +173,18 @@ app.post("/insert-author", async (request, response) => {
 
 app.post("/update-author", async (request, response) => {
   let [fields, files] = await Parser.parseForm(request)
+  let id = +fields.id
   connection.query(
-    ` UPDATE authors SET author_name = ?, country = ?, style_movement = ?, time_period = ?, note = ?, dataset_id = ?
+    ` UPDATE authors SET author_name = ?, country = ?, style_movement = ?, time_period = ?, note = ?
       WHERE id = ?
     `,
-    [fields.author_name, fields.country, fields.style_movement, fields.time_period, fields.note, fields.dataset_id, fields.id]
+    [fields.author_name, fields.country, fields.style_movement, fields.time_period, fields.note, id]
     ,
     function(error, rows, fields) {
       if(error)
         console.log("Query error: ", error.message)
       else {
-        console.log("Success: Author deleted.")
+        console.log("Success: Author updated.")
         response.writeHead(200, "OK")
         response.send()
       }
@@ -208,36 +211,34 @@ app.post("/delete-author", async (request, response) => {
 //#endregion
 
 app.post("/upload-file", async (request, response) => {
-  let [fields, files] = await Parser.parseForm(request)
-  if(!request.files) return console.log('no files found') //this is weird but that's how the syntax works
-  console.log("f");
-  let file = files.file
-  let filename = fields.author_id + "_" + Math.random() * 1_000_000
-  file.mv("./uploads/" + filename)
+  let form = new multiparty.Form({uploadDir: "./uploads/", autoFiles: true})
+  form.parse(request, function(err, fields, files) {
+    let file = files.file[0]
+    
+    let ind = file.originalFilename.lastIndexOf(".")
+    let extension = file.originalFilename.substring(ind)
+    
+    let fileName = fields.author_id + "_" + Math.random() * 1_000_000 + extension
+    let newPath = "./uploads/" + fileName
 
-  response.writeHead(200, "OK")
-  response.write(filename + "\n\n")
-  response.end("End of message.")
+    fs.rename(file.path, newPath, (err) => {
+      if(err)
+        console.log(err)
+    })
+
+    let returnFile = fs.readFile(newPath, 'binary', (error, data) => {
+      if(error) 
+        console.error(error)
+      else
+        console.log(data)
+    })
+
+    response.writeHead(200, {'Content-Type': `application/json`})
+    response.write(JSON.stringify({newPath}))
+    response.end()
+
+  });
 })
-
-// function registerBodyParser() {
-//   //this makes the file upload work, but the form parsing breaks if you enable this
-//   //probably issue with bodyParser, according to internet research 🤓
-//   app.use(fileUpload({
-//     createParentPath: true
-//   }))
-//   app.use(bodyParser.json())
-//   app.use(bodyParser.urlencoded({extended: true}));
-//   app.use(morgan('dev'));
-// }
-// function unregisterBodyParser() {
-//   delete app.use(fileUpload({
-//     createParentPath: true
-//   }))
-//   delete app.use(bodyParser.json())
-//   delete app.use(bodyParser.urlencoded({extended: true}));
-//   delete app.use(morgan('dev'));
-// }
 
 class Parser {
   static async parseForm(request) {

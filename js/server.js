@@ -16,7 +16,7 @@ class Server {
     return rows
   }
   static async updateAuthor(data) {
-    throw "not fully implemented"
+    console.log(data.dataset_id)
     let formData = this.createFormData(data)
     const response = await fetch("http://127.0.0.1:5501/update-author", {
       method: "POST",

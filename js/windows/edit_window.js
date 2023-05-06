@@ -16,24 +16,46 @@ class EditWindow extends ProgramWindow {
   handleClick(e) {
     let clicked = {
       addWorkBtn: e.target.closest(".add-work-button"),
-      addItemBtn: e.target.closest(".add-item-button"),
+      addItemBtn: e.target.closest("button.add-item-button"),
+      editItemBtn: e.target.closest("button.edit-item-button"),
+      cancelEditBtn: e.target.closest("button.cancel-edit-button"),
       item: e.target.closest(".item"),
       deleteItemBtn: e.target.closest(".item .delete-icon"),
       fillPreviousBtn: e.target.closest("button.fill-with-previous"),
       selectAllTextBtn: e.target.closest("button.select-all-text"),
     }
-    if(clicked.addWorkBtn)
+    if(clicked.addWorkBtn) {
       this.createWorkHTML()
-    if(clicked.item)
-      this.selectAuthor(clicked.item.dataset.id, clicked.item)
-    if(clicked.addItemBtn)
+      return
+    }
+    if(clicked.addItemBtn) {
       this.createAuthor()
-    if(clicked.deleteItemBtn) 
+      return
+    }
+    if(clicked.editItemBtn) {
+      this.updateAuthor()
+      return
+    }
+    if(clicked.cancelEditBtn) {
+      this.cancelEdit()
+      return
+    }
+    if(clicked.deleteItemBtn)  {
       this.deleteAuthor(clicked.item.dataset.author)
-    if(clicked.fillPreviousBtn)
+      return
+    }
+    if(clicked.fillPreviousBtn) {
       this.fillPreviousValue(clicked.fillPreviousBtn)
-    if(clicked.selectAllTextBtn)
+      return
+    }
+    if(clicked.selectAllTextBtn) {
       clicked.selectAllTextBtn.closest(".input-field").querySelector("input[type='text']").select()
+      return
+    }
+    if(clicked.item) {
+      this.selectAuthor(clicked.item.dataset.id, clicked.item)
+      return
+    }
   }
   handleKeydown(e) {
     let focused = document.activeElement
@@ -43,24 +65,26 @@ class EditWindow extends ProgramWindow {
       this.createWork()
   }
   //#endregion
-  loadDataset(datasetId, datasetName) {
+  async loadDataset(datasetId, datasetName) {
     console.log(datasetId)
     this.datasetId = +datasetId
     this.datasetName = datasetName
-    Server.getDatasetData(this.datasetId)
+    await Server.getDatasetData(this.datasetId)
       .then((rows) => {
         this.refreshData(rows)
       })
+    return {loaded: true}
   }
   refreshData(rows) {
     this.dataset = rows
     Query.allOn(this.element, ".item").forEach(item => item.remove())
+    Query.on(this.element, "#editor-current-dataset-text-label").innerText = this.datasetName
     rows.forEach(row => this.createAuthorHTML(row))
   }
   createAuthor() {
-    console.log("create author");
+    console.log("create author")
     let data = {}
-    Query.allOn(this.element, "#edit-form input[type='text']").forEach(input => {
+    Query.allOn(this.element, "#edit-form input[type='text'], #edit-form textarea").forEach(input => {
       data[input.name] = input.value
     })
     data["dataset_id"] = this.datasetId
@@ -69,6 +93,19 @@ class EditWindow extends ProgramWindow {
       .then((rows) => this.refreshData(rows))
     this.updatePreviousValues()
     this.clearInputs()
+  }
+  updateAuthor() {
+    console.log("update author")
+    let data = {}
+    Query.allOn(this.element, "#edit-form input[type='text'], #edit-form textarea").forEach(input => {
+      data[input.name] = input.value
+    })
+    data["dataset_id"] = this.datasetId
+    data["id"] = this.selectedAuthorId
+    this.parseInputData(data)
+    Server.updateAuthor(data)
+      .then((rows) => this.refreshData(rows))
+    this.cancelEdit()
   }
   createAuthorHTML(author) {
     console.log("created author item for", author.author_name)
@@ -87,10 +124,19 @@ class EditWindow extends ProgramWindow {
          .append(item)
   }
   selectAuthor(authorId, element) {
+    if(this.selectedAuthorId === +authorId) 
+      console.log('already selected')
     this.selectedAuthorId = +authorId
     Query.allOn(this.element, ".item.active").forEach(item => item.classList.remove("active"))
     element.classList.add("active")
+    Query.on(this.element, "button.cancel-edit-button").classList.remove("hidden")
     this.setMode("edit")
+  }
+  cancelEdit() {
+    this.selectedAuthorId = null
+    Query.allOn(this.element, ".item.active").forEach(item => item.classList.remove("active"))
+    Query.on(this.element, "button.cancel-edit-button").classList.add("hidden")
+    this.setMode("add")
   }
   deleteAuthor(authorName) {
     if(window.confirm("Erase " + authorName + " from history books?"))
@@ -104,6 +150,7 @@ class EditWindow extends ProgramWindow {
     // this.createWorkHTML(...params)
   }
   createWorkHTML(workTitle, workDescription, authorName) {
+    console.log("f");
     let item =          HTML.Element("div", "work")
     let title =         HTML.Element("div", "work-title", workTitle)
     let button =        HTML.Element("div", "add-image-button")
@@ -133,16 +180,22 @@ class EditWindow extends ProgramWindow {
     let author = this.dataset.find(author => author.id === this.selectedAuthorId)
     if(this.mode.is("add")) {
       Query.on(this.element, ".main-heading h1").innerText = "Add new item"
-      Query.on(this.element, "button.add-item-button").innerText = "Add item"
+      Query.on(this.element, ".main-heading h3").classList.add("hidden")
+      Query.on(this.element, "button.edit-item-button").classList.add("hidden")
+      Query.on(this.element, "button.add-item-button").classList.remove("hidden")
+      this.clearInputs()
     }
     if(this.mode.is("edit")) {
-      Query.on(this.element, ".main-heading h1").innerText = `Edit item: ${author.author_name}`
-      Query.on(this.element, "button.add-item-button").innerText = "Edit item"
+      Query.on(this.element, ".main-heading h1").innerText = author.author_name
+      Query.on(this.element, ".main-heading h3").innerText = "Edit item:"
+      Query.on(this.element, ".main-heading h3").classList.remove("hidden")
+      Query.on(this.element, "button.edit-item-button").classList.remove("hidden")
+      Query.on(this.element, "button.add-item-button").classList.add("hidden")
       Query
-      .allOn(this.element, "input[type='text']")
-      .forEach(input => {
+      .allOn(this.element, "input[type='text'], textarea")
+      .forEach(input => 
         input.value = author[input.name]
-      })
+      )
     }
   }
   fillPreviousValue(button) {
@@ -160,7 +213,7 @@ class EditWindow extends ProgramWindow {
   }
   clearInputs() {
     Query
-    .allOn(this.element, "input[type='text']")
+    .allOn(this.element, "input[type='text'], textarea")
     .forEach(input => {
       input.value = ""
     })
@@ -169,6 +222,7 @@ class EditWindow extends ProgramWindow {
   parseInputData(data) {
     console.log("before", data)
     for(let key in data) {
+      console.log(key)
       data[key] = this["parse_" + key](data[key])
     }
     console.log("after", data)
@@ -184,6 +238,7 @@ class EditWindow extends ProgramWindow {
     let output = input.capitalizeEnglishCountryName()
     return output      
   }
+  //this method makes it easier to input centuries like 12-14 -> 12.-14. století
   parse_time_period(input) {
     let output = input.toLocaleLowerCase()
     let number = +output.replace(/[^0-9\.]+/g, '')
@@ -220,8 +275,10 @@ class EditWindow extends ProgramWindow {
     return output    
   }
   parse_dataset_id(input) {
-    let output = input
-    return output    
+    return input  
+  }  
+  parse_id(input) {
+    return input
   }
   //#endregion
 }

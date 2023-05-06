@@ -116,7 +116,7 @@ class PracticeSetupWindow extends ProgramWindow {
       })
   }
   refreshView() {
-    let infoRow = Query.on(this.element, "*[data-show-on='more-cards-than-items-in-dataset']")
+    let infoRow = Query.on(this.element, "*[data-show-on='more-cards-than-items-in-dataset'] .text")
     infoRow.innerText = `Training set only contains ${this.rows.length} entries. Some cards will repeat.`
     if(this.rows.length < this.practiceData.cardCount)
       infoRow.classList.remove("hidden")
@@ -137,7 +137,8 @@ class PracticeSetupWindow extends ProgramWindow {
   setTrainingMethod(cardElement, trainingMethod) {
     this.trainingMethod = trainingMethod
     Query.allOn(this.element, ".training-preview-card").forEach(card => card.classList.remove("selected"))
-    if(typeof cardElement === "object" && cardElement !== null) cardElement.classList.add("selected")
+    if(typeof cardElement === "object" && cardElement !== null) 
+      cardElement.classList.add("selected")
     console.warn("cardElement needs to be created upon selecting a custom training method")
   }
 }

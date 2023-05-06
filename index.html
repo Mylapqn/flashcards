@@ -51,7 +51,7 @@
           </div>
         </div>
         <div style="flex-grow: 1;"></div>
-        <button class="edit-item-button">
+        <button class="edit-item-button tooltip" data-tooltiptitle="Edit item in editor">
           <div class="icon icon-4x edit-item-icon icon-no-hover"></div>
         </button>
         <button class="zen-mode-button tooltip" data-tooltiptitle="Focus">
@@ -62,11 +62,16 @@
           <div class="percentage-correct-pie-graph"></div>
         </div>
       </div>
-      <div class="card">
-        <div class="author-name"><h1>William Morris</h1></div>
+      <div class="practice-card-container">
+        <div data-tooltiptitle="Click to flip card" style="z-index: 1;" class="practice-card side-a ">
+          A
+        </div>
+        <div data-tooltiptitle="Click to flip card" class="practice-card side-b flipped ">
+          B
+        </div>
       </div>
       <div class="buttons" data-zenhide="true">
-        <button class="give-hint">Hint</button>
+        <button class="give-hint hidden">Hint</button>
         <div style="flex-grow: 1;"></div>
         <button class="fail-button">Fail</button>
         <button class="pass-button">Pass</button>
@@ -95,10 +100,11 @@
     <div class="main-content">
       <div class="edit-panel">
         <div class="dataset-info">
-          <span class="secondary-text">Editing dataset:</span>
+          <span class="secondary-text">Dataset:</span>
           <span class="active-text" id="editor-current-dataset-text-label">DEKU1</span>
         </div>
         <div class="main-heading">
+          <h3 class="hidden" style="color: var(--color-secondary0); font-weight: 300;"></h3>
           <h1>Add new item</h1>
         </div>
           <div class="inputs" id="edit-form">
@@ -139,15 +145,7 @@
             </div>
           </div>
           <div class="input-field note">
-            <input tabindex="1" type="text" name="note" id="" placeholder="Note">
-            <button class="select-all-text">...</button>
-            <div class="fill-with-previous-wrapper">
-              <button class="fill-with-previous" data-forinput="note">
-                <div class="background-fill fill-with-previous-icon"></div>
-              </button>
-              <div class="background-field"></div>
-              <div class="previous-value" data-forinput="note">Previous value</div>
-            </div>
+            <textarea class="note-textarea" tabindex="1" type="text" name="note" id="" placeholder="Note"></textarea>
           </div>
           <div class="works">
             <div class="add-work-button" tabindex="1">
@@ -161,12 +159,14 @@
         </div>
         <div class="bottom-buttons">
           <div style="flex-grow: 1;"></div>
-          <label for="ignore-empty-fields-checkbox">
+          <!-- <label for="ignore-empty-fields-checkbox">
             <div class="ignore-empty-fields-checkbox-wrapper">
               <input type="checkbox" name="ignore-empty-fields-checkbox" id="ignore-empty-fields-checkbox">
               <span>Ignore empty fields</span>
             </div>
-          </label>
+          </label> -->
+          <button class="cancel-edit-button hidden">Cancel</button>
+          <button class="edit-item-button hidden">Edit item</button>
           <button class="add-item-button">Add item</button>
         </div>
       </div>
@@ -212,7 +212,7 @@
         </div>
         <div class="setup-info-row" data-show-on="more-cards-than-items-in-dataset">
           <div class="icon icon-2x info-icon icon-no-hover"></div>
-          <!-- text -->
+          <div class="text"></div>
         </div>
         <div class="setup-row vertical">
           <div class="setup-row-title">Training method</div>
@@ -283,6 +283,15 @@
             <div class="icon icon-4x sort-widget-icon"></div>
           </div>
           <div class="card-row-title">Time period</div>
+          <button class="hide-in-practice-mode">
+            <div class="icon icon-3x zen-icon"></div>
+          </button>
+        </div>
+        <div class="card-row" data-draggable="true" data-dragtype="card-row" data-datatype="note">
+          <div class="card-row-sort-widget" data-draghandle="true">
+            <div class="icon icon-4x sort-widget-icon"></div>
+          </div>
+          <div class="card-row-title">Note</div>
           <button class="hide-in-practice-mode">
             <div class="icon icon-3x zen-icon"></div>
           </button>
@@ -363,7 +372,7 @@
   <!-- app -->
   <script src="js/app.js"></script>
   <script>
-    program.windows.set(datasetEditWindow)
+    // program.windows.set(chapterSelectWindow)
   </script>
 </body>
 </html>

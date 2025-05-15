@@ -12,8 +12,8 @@ class Program {
             this.all.push(win)
       },
       set(win) {
-        if(!this.all.findChild(win)) 
-          return
+        if(!this.all.findChild(win)) return
+        
         if(this.active instanceof ProgramWindow) 
           this.history.unshift(this.active)
         this.future = []
